@@ -1,6 +1,7 @@
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { readDemoAnalysis } from "@/lib/demo-analysis";
 import { useAction, useQuery } from "convex/react";
 import { Bot, Loader2, Send, Sparkles, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -36,7 +37,10 @@ export function ChatPanel({ className }: { className?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Context-awareness: the most recent analysis powers the assistant.
-  const latest = analyses && analyses.length > 0 ? analyses[0] : undefined;
+  // Signed-in users get their latest saved report; signed-out visitors get
+  // the analysis just run on the landing page's Fabric Lab (localStorage).
+  const saved = analyses && analyses.length > 0 ? analyses[0] : undefined;
+  const latest = saved ?? readDemoAnalysis();
   const analysisContext = latest
     ? {
         fabric: latest.fabric,

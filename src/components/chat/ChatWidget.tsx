@@ -1,12 +1,19 @@
 import { ChatPanel } from "./ChatPanel";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /** Floating "EcoPrint AI Assistant" launcher — bottom-right, above the shell. */
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
+
+  // Allow any button (e.g. the landing header's "AI Assistant") to open chat.
+  useEffect(() => {
+    const openChat = () => setOpen(true);
+    window.addEventListener("ecoprint:open-chat", openChat);
+    return () => window.removeEventListener("ecoprint:open-chat", openChat);
+  }, []);
 
   return (
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">

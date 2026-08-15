@@ -43,47 +43,47 @@
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
-  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui,
-    sans-serif;
+  --font-display: "Fraunces", "Space Grotesk", "Inter", ui-serif, ui-sans-serif,
+    system-ui, serif;
 }
 
-/* EcoPrint AI — professional AI SaaS theme.
-   Light by default: clean green-tinted white canvas, forest-green primary,
-   natural-earth ochre accent, soft sage surfaces. The .dark block keeps the
-   previous dark tokens available for future toggle support. */
+/* EcoPrint AI — premium fashion-tech theme.
+   Light by default: ivory/cream canvas, deep-forest green primary, muted
+   gold accent, soft beige surfaces and a subtle purple secondary tone.
+   The .dark block keeps previous dark tokens available for future toggle. */
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.986 0.004 150);
-  --foreground: oklch(0.24 0.022 155);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.022 155);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.022 155);
-  --primary: oklch(0.5 0.115 155);
-  --primary-foreground: oklch(0.99 0.005 150);
-  --secondary: oklch(0.945 0.014 150);
-  --secondary-foreground: oklch(0.32 0.035 155);
-  --muted: oklch(0.955 0.008 150);
-  --muted-foreground: oklch(0.5 0.022 155);
-  --accent: oklch(0.72 0.13 80);
-  --accent-foreground: oklch(0.3 0.05 80);
-  --destructive: oklch(0.58 0.2 25);
-  --border: oklch(0.885 0.01 150);
-  --input: oklch(0.87 0.012 150);
-  --ring: oklch(0.5 0.115 155);
-  --chart-1: oklch(0.5 0.115 155);
-  --chart-2: oklch(0.68 0.13 80);
-  --chart-3: oklch(0.62 0.15 40);
-  --chart-4: oklch(0.55 0.13 250);
-  --chart-5: oklch(0.68 0.1 170);
-  --sidebar: oklch(0.995 0.003 150);
-  --sidebar-foreground: oklch(0.24 0.022 155);
-  --sidebar-primary: oklch(0.5 0.115 155);
-  --sidebar-primary-foreground: oklch(0.99 0.005 150);
-  --sidebar-accent: oklch(0.935 0.014 150);
-  --sidebar-accent-foreground: oklch(0.24 0.022 155);
-  --sidebar-border: oklch(0.885 0.01 150);
-  --sidebar-ring: oklch(0.5 0.115 155);
+  --radius: 0.9rem;
+  --background: oklch(0.982 0.008 95);
+  --foreground: oklch(0.25 0.032 155);
+  --card: oklch(0.997 0.003 95);
+  --card-foreground: oklch(0.25 0.032 155);
+  --popover: oklch(0.997 0.003 95);
+  --popover-foreground: oklch(0.25 0.032 155);
+  --primary: oklch(0.4 0.09 160);
+  --primary-foreground: oklch(0.985 0.008 95);
+  --secondary: oklch(0.945 0.015 90);
+  --secondary-foreground: oklch(0.32 0.04 150);
+  --muted: oklch(0.955 0.012 90);
+  --muted-foreground: oklch(0.5 0.028 130);
+  --accent: oklch(0.72 0.1 85);
+  --accent-foreground: oklch(0.32 0.06 70);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.89 0.018 90);
+  --input: oklch(0.87 0.018 90);
+  --ring: oklch(0.4 0.09 160);
+  --chart-1: oklch(0.4 0.09 160);
+  --chart-2: oklch(0.72 0.1 85);
+  --chart-3: oklch(0.55 0.1 35);
+  --chart-4: oklch(0.58 0.09 300);
+  --chart-5: oklch(0.6 0.09 180);
+  --sidebar: oklch(0.993 0.004 95);
+  --sidebar-foreground: oklch(0.25 0.032 155);
+  --sidebar-primary: oklch(0.4 0.09 160);
+  --sidebar-primary-foreground: oklch(0.985 0.008 95);
+  --sidebar-accent: oklch(0.94 0.015 90);
+  --sidebar-accent-foreground: oklch(0.25 0.032 155);
+  --sidebar-border: oklch(0.89 0.018 90);
+  --sidebar-ring: oklch(0.4 0.09 160);
 }
 
 .dark {
