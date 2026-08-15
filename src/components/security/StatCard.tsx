@@ -1,0 +1,50 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
+
+export function StatCard({
+  icon: Icon,
+  label,
+  value,
+  sub,
+  tone = "default",
+  className,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string | number;
+  sub?: string;
+  tone?: "default" | "success" | "warning" | "danger" | "info";
+  className?: string;
+}) {
+  const tones: Record<string, string> = {
+    default: "bg-primary/8 text-primary",
+    success: "bg-emerald-500/10 text-emerald-600",
+    warning: "bg-amber-500/10 text-amber-600",
+    danger: "bg-rose-500/10 text-rose-600",
+    info: "bg-sky-500/10 text-sky-600",
+  };
+  return (
+    <Card className="shadow-none border-border/70">
+      <CardContent className="flex items-start gap-3 p-4">
+        <span
+          className={cn(
+            "flex size-9 shrink-0 items-center justify-center rounded-lg",
+            tones[tone],
+          )}
+        >
+          <Icon className="size-4" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
+            {label}
+          </p>
+          <p className="mt-0.5 text-xl font-semibold tracking-tight">
+            {value}
+          </p>
+          {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
