@@ -13,6 +13,8 @@
 import { api } from "./_generated/api";
 import { mutation } from "./_generated/server";
 import { buildChainSpecs } from "./chain_specs";
+import { predictAnalysis } from "./analysis";
+import { PALETTES } from "./constants";
 
 const iso = (y: number, m: number, d: number, h = 10, min = 0) =>
   new Date(Date.UTC(y, m - 1, d, h, min)).toISOString();
@@ -46,6 +48,9 @@ const rawBatches = [
   { code: "FARM-WAL-2026-001", farmerCode: "FARM-004", farmerName: "Aravali Herb Gardens", material: "Walnut husk", quantityKg: 90, harvestDate: iso(2026, 6, 15), status: "pending" as const, submittedAt: iso(2026, 6, 18) },
   { code: "FARM-NEM-2026-001", farmerCode: "FARM-005", farmerName: "Konkan Neem Cooperative", material: "Neem leaves", quantityKg: 200, harvestDate: iso(2026, 7, 1), status: "flagged" as const, submittedAt: iso(2026, 7, 3) },
   { code: "FARM-HEN-2026-001", farmerCode: "FARM-002", farmerName: "Sahyadri Botanical Farms", material: "Henna leaves", quantityKg: 60, harvestDate: iso(2026, 5, 30), status: "verified" as const, submittedAt: iso(2026, 6, 1), verifiedAt: iso(2026, 6, 7) },
+  { code: "FARM-ONI-2026-001", farmerCode: "FARM-001", farmerName: "Green Valley Farm", material: "Onion skins", quantityKg: 180, harvestDate: iso(2026, 5, 28), status: "verified" as const, submittedAt: iso(2026, 5, 30), verifiedAt: iso(2026, 6, 5) },
+  { code: "FARM-BEE-2026-001", farmerCode: "FARM-004", farmerName: "Aravali Herb Gardens", material: "Beetroot", quantityKg: 95, harvestDate: iso(2026, 6, 5), status: "verified" as const, submittedAt: iso(2026, 6, 7), verifiedAt: iso(2026, 6, 12) },
+  { code: "FARM-TEA-2026-001", farmerCode: "FARM-004", farmerName: "Aravali Herb Gardens", material: "Waste tea leaves", quantityKg: 110, harvestDate: iso(2026, 5, 20), status: "verified" as const, submittedAt: iso(2026, 5, 22), verifiedAt: iso(2026, 5, 28) },
 ];
 
 const dyes = [
@@ -59,6 +64,9 @@ const dyes = [
   { code: "DYE-NEM-2026-001", name: "Neem Leaf Green", botanicalSource: "Azadirachta indica", colorHex: "#5c7a4a", colorName: "Olive Green", farmerCode: "FARM-005", farmerName: "Konkan Neem Cooperative", manufacturerCode: "MFG-003", manufacturerName: "Vatika Dye Labs", rawBatchCode: "FARM-NEM-2026-001", availability: "limited" as const, sustainabilityInfo: "Neem also acts as natural insect repellent for storage.", status: "flagged" as const, mordant: "Copper sulphate", pricePerKg: 980 },
   { code: "DYE-IND-2026-002", name: "Indigo Vat No. 2", botanicalSource: "Indigofera tinctoria", colorHex: "#1f3a7a", colorName: "Midnight Indigo", farmerCode: "FARM-003", farmerName: "Kutch Indigo Collective", manufacturerCode: "MFG-001", manufacturerName: "Aravalli Naturals", rawBatchCode: "FARM-IND-2026-002", availability: "limited" as const, sustainabilityInfo: "Traditional Kutch open vat; community certified.", status: "verified" as const, mordant: "None (vat dye)", pricePerKg: 3600, verifiedAt: iso(2026, 6, 3) },
   { code: "DYE-HEN-2026-001", name: "Henna Rust", botanicalSource: "Lawsonia inermis", colorHex: "#9a4a2f", colorName: "Rust Orange", farmerCode: "FARM-002", farmerName: "Sahyadri Botanical Farms", manufacturerCode: "MFG-002", manufacturerName: "Coastal Colour Works", rawBatchCode: "FARM-HEN-2026-001", availability: "available" as const, sustainabilityInfo: "Lawsone-rich leaves; pH-adjusted bath.", status: "verified" as const, mordant: "Iron + vinegar", pricePerKg: 1200, verifiedAt: iso(2026, 6, 10) },
+  { code: "DYE-ONI-2026-001", name: "Onion Skin Amber", botanicalSource: "Allium cepa", colorHex: "#b3702f", colorName: "Amber Brown", farmerCode: "FARM-001", farmerName: "Green Valley Farm", manufacturerCode: "MFG-002", manufacturerName: "Coastal Colour Works", rawBatchCode: "FARM-ONI-2026-001", availability: "available" as const, sustainabilityInfo: "Upcycled onion skins — circular, zero-cost dye source.", status: "verified" as const, mordant: "Alum", pricePerKg: 700, verifiedAt: iso(2026, 6, 6) },
+  { code: "DYE-BEE-2026-001", name: "Beetroot Magenta", botanicalSource: "Beta vulgaris", colorHex: "#8e2a4f", colorName: "Magenta", farmerCode: "FARM-004", farmerName: "Aravali Herb Gardens", manufacturerCode: "MFG-002", manufacturerName: "Coastal Colour Works", rawBatchCode: "FARM-BEE-2026-001", availability: "limited" as const, sustainabilityInfo: "Food-industry by-product; low-temperature extraction.", status: "verified" as const, mordant: "Alum + iron", pricePerKg: 1100, verifiedAt: iso(2026, 6, 13) },
+  { code: "DYE-TEA-2026-001", name: "Tea Leaf Brown", botanicalSource: "Camellia sinensis", colorHex: "#7a5c40", colorName: "Tea Brown", farmerCode: "FARM-004", farmerName: "Aravali Herb Gardens", manufacturerCode: "MFG-003", manufacturerName: "Vatika Dye Labs", rawBatchCode: "FARM-TEA-2026-001", availability: "available" as const, sustainabilityInfo: "Waste tea leaves from cafés — tannin-rich, circular source.", status: "verified" as const, mordant: "Iron", pricePerKg: 850, verifiedAt: iso(2026, 5, 29) },
 ];
 
 const fabrics = [
@@ -137,11 +145,99 @@ const measurements = {
 // Seed mutation
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Additive seeding — runs on every load for both fresh and existing
+// deployments, so new catalogue entries and demo records appear without a
+// full reset. Every insert is guarded by an existence check.
+// ---------------------------------------------------------------------------
+
+async function ensureAdditiveData(ctx: import("./_generated/server").MutationCtx) {
+  // 1) New catalogue dyes (onion / beetroot / tea) + their raw batches.
+  const dyeCodes = new Set((await ctx.db.query("dyes").collect()).map((d) => d.code));
+  const missingDyes = dyes.filter((d) => !dyeCodes.has(d.code));
+  if (missingDyes.length > 0) {
+    const rawCodes = new Set(
+      (await ctx.db.query("rawMaterialBatches").collect()).map((b) => b.code),
+    );
+    for (const d of missingDyes) {
+      const raw = rawBatches.find((b) => b.code === d.rawBatchCode);
+      if (raw && !rawCodes.has(raw.code)) {
+        await ctx.db.insert("rawMaterialBatches", raw);
+      }
+      await ctx.db.insert("dyes", d);
+    }
+  }
+
+  // 2) Demo fabric analyses for the history / dashboard charts.
+  const analysisCount = await ctx.db.query("fabricAnalyses").collect();
+  if (analysisCount.length === 0) {
+    const demo = [
+      { fabric: "Cotton", dye: "Indigo", pattern: "Floral", washes: 10, initialHex: "#2b4a9b", day: 12 },
+      { fabric: "Silk", dye: "Beetroot", pattern: "Abstract", washes: 5, initialHex: "#8e2a4f", day: 18 },
+      { fabric: "Linen", dye: "Tea", pattern: "Block Print", washes: 20, initialHex: "#7a5c40", day: 24 },
+      { fabric: "Organic Cotton", dye: "Turmeric", pattern: "Geometric", washes: 1, initialHex: "#e3a32a", day: 28 },
+    ];
+    for (const input of demo) {
+      const r = predictAnalysis(input);
+      await ctx.db.insert("fabricAnalyses", {
+        fabric: r.fabric,
+        dye: r.dye,
+        pattern: r.pattern,
+        washes: r.washes,
+        initialHex: r.initialHex,
+        dominantColor: r.dominantColor,
+        rgb: r.rgb,
+        lab: r.lab,
+        afterHex: r.afterHex,
+        retention: r.retention,
+        retentionCategory: r.retentionCategory,
+        colorDifference: r.colorDifference,
+        tempMin: r.tempMin,
+        tempMax: r.tempMax,
+        durationMin: r.durationMin,
+        durationMax: r.durationMax,
+        mordant: r.mordant,
+        recommendation: r.recommendation,
+        fabricRecommendation: r.fabricRecommendation,
+        washingRecommendation: r.washingRecommendation,
+        sustainabilityScore: r.sustainabilityScore,
+        confidence: r.confidence,
+        mode: r.mode,
+        createdAt: iso(2026, 6, input.day),
+      });
+    }
+  }
+
+  // 3) Demo saved designs for the Saved Designs page.
+  const designCount = await ctx.db.query("savedDesigns").collect();
+  if (designCount.length === 0) {
+    const demos = [
+      { title: "Tie Dye Swirl in Indigo", prompt: "Swirling indigo clouds over cotton", fabric: "Cotton", dye: "Indigo", pattern: "Tie Dye", palette: PALETTES["Indigo blue"], seed: 12041, day: 2 },
+      { title: "Block Print in Marigold", prompt: "Hand block print with marigold blooms", fabric: "Organic Cotton", dye: "Marigold", pattern: "Block Print", palette: PALETTES.Yellow, seed: 77511, day: 6 },
+      { title: "Geometric Prism in Hibiscus", prompt: "Sharp geometric prisms in hibiscus pink", fabric: "Silk", dye: "Hibiscus", pattern: "Geometric", palette: PALETTES.Pink, seed: 9823, day: 9 },
+    ];
+    for (const d of demos) {
+      await ctx.db.insert("savedDesigns", {
+        title: d.title,
+        prompt: d.prompt,
+        fabric: d.fabric,
+        dye: d.dye,
+        pattern: d.pattern,
+        palette: d.palette,
+        seed: d.seed,
+        mode: "demo-svg",
+        createdAt: iso(2026, 7, d.day),
+      });
+    }
+  }
+}
+
 export const seedDemoData = mutation({
   args: {},
   handler: async (ctx): Promise<{ seeded: boolean }> => {
     const existingGarments = await ctx.db.query("garments").collect();
-    if (existingGarments.length > 0) return { seeded: false };
+    const firstSeed = existingGarments.length === 0;
+    if (firstSeed) {
 
     // Actors ---------------------------------------------------------------
     for (const f of farmers) await ctx.db.insert("farmers", { ...f, joinedAt: f.joinedAt });
@@ -305,8 +401,10 @@ export const seedDemoData = mutation({
       { actor: "demo-admin", action: "qr_generated", entity: "garment", entityCode: "NF-2026-000124", details: "Verification QR issued for public traceability page.", timestamp: iso(2026, 7, 14, 12, 30) },
     ];
     for (const a of audits) await ctx.db.insert("auditLogs", a);
+    }
 
-    return { seeded: true };
+    await ensureAdditiveData(ctx);
+    return { seeded: firstSeed };
   },
 });
 

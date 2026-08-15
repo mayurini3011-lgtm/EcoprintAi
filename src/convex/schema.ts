@@ -282,6 +282,57 @@ const schema = defineSchema(
       checkedAt: v.string(),
       scanner: v.string(),
     }).index("by_target", ["targetType", "targetCode"]),
+
+    // ------------------------------------------------------------------
+    // Fabric color-retention analysis (EcoPrint AI core feature)
+    // ------------------------------------------------------------------
+
+    fabricAnalyses: defineTable({
+      userId: v.optional(v.id("users")),
+      imageHash: v.optional(v.string()),
+      // Inputs
+      fabric: v.string(), // e.g. "Cotton"
+      dye: v.string(), // e.g. "Indigo"
+      pattern: v.string(), // e.g. "Floral"
+      washes: v.number(), // simulated wash cycles
+      // Measured/derived colour
+      initialHex: v.string(),
+      dominantColor: v.string(), // human label, e.g. "Deep Indigo"
+      rgb: v.object({ r: v.number(), g: v.number(), b: v.number() }),
+      lab: v.object({ L: v.number(), a: v.number(), b: v.number() }),
+      afterHex: v.string(),
+      // Prediction outputs
+      retention: v.number(), // 0-100
+      retentionCategory: v.string(), // Excellent | Good | Moderate | Low
+      colorDifference: v.number(), // CIEDE2000
+      // Dyeing conditions
+      tempMin: v.number(),
+      tempMax: v.number(),
+      durationMin: v.number(),
+      durationMax: v.number(),
+      mordant: v.string(),
+      // Recommendations
+      recommendation: v.string(),
+      fabricRecommendation: v.string(),
+      washingRecommendation: v.string(),
+      sustainabilityScore: v.number(), // 0-100
+      confidence: v.number(), // 0-100
+      mode: v.string(), // "simulated" | "model"
+      createdAt: v.string(),
+    }).index("by_user", ["userId"]),
+
+    savedDesigns: defineTable({
+      userId: v.optional(v.id("users")),
+      title: v.string(),
+      prompt: v.string(),
+      fabric: v.string(),
+      dye: v.string(),
+      pattern: v.string(),
+      palette: v.array(v.object({ name: v.string(), hex: v.string() })),
+      seed: v.number(),
+      mode: v.string(), // "demo-svg" | "model"
+      createdAt: v.string(),
+    }).index("by_user", ["userId"]),
   },
   {
     schemaValidation: false,

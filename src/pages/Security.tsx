@@ -179,12 +179,12 @@ export default function Security() {
                   {valid ? "🟢 VERIFIED — No Tampering Detected" : "🔴 TAMPERING DETECTED"}
                 </p>
                 {valid ? (
-                  <p className="mt-1 text-xs text-emerald-300/90">
+                  <p className="mt-1 text-xs text-emerald-700/90">
                     All {verification.eventCount} records match their stored
                     SHA-256 hashes and the chain links are intact.
                   </p>
                 ) : (
-                  <div className="mt-1 text-xs text-rose-300/90">
+                  <div className="mt-1 text-xs text-rose-700/90">
                     <p>
                       The hash of this record no longer matches the stored
                       integrity chain.
@@ -251,10 +251,10 @@ export default function Security() {
                       className={cn(
                         "text-sm font-bold",
                         a.status === "high"
-                          ? "text-rose-400"
+                          ? "text-rose-700"
                           : a.status === "medium"
-                            ? "text-amber-400"
-                            : "text-emerald-400",
+                            ? "text-amber-700"
+                            : "text-emerald-700",
                       )}
                     >
                       {a.riskScore}/100

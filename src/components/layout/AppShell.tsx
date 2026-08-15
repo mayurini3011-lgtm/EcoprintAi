@@ -13,19 +13,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Logo, LogoMark } from "@/components/brand/Logo";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { RoleSwitcher } from "./RoleSwitcher";
 import { useAuth } from "@/hooks/use-auth";
 import { useEnsureDemoData } from "@/hooks/use-demo-data";
 import {
+  Bot,
+  BookMarked,
+  CreditCard,
   Factory,
+  FileText,
+  FlaskConical,
+  History,
   LayoutDashboard,
   LogOut,
   Menu,
   Package,
+  Palette,
   Scissors,
   ShieldCheck,
   Sparkles,
   Sprout,
+  User,
   Droplets,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -34,45 +43,108 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-const NAV: { to: string; label: string; icon: LucideIcon }[] = [
-  { to: "/dashboard", label: "EcoPrint Studio", icon: Sparkles },
-  { to: "/dyes", label: "Dye Catalogue", icon: Droplets },
-  { to: "/tailors", label: "Tailor Network", icon: Scissors },
-  { to: "/orders", label: "My Orders", icon: Package },
-  { to: "/farmer", label: "Farmer Portal", icon: Sprout },
-  { to: "/manufacturer", label: "Manufacturer", icon: Factory },
-  { to: "/security", label: "Security Center", icon: ShieldCheck },
-  { to: "/admin", label: "Admin Console", icon: LayoutDashboard },
+interface NavItem {
+  to: string;
+  label: string;
+  icon: LucideIcon;
+}
+
+const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
+  {
+    label: "Workspace",
+    items: [
+      { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+      { to: "/analyze", label: "Fabric Analysis", icon: FlaskConical },
+      { to: "/design-studio", label: "AI Design Studio", icon: Palette },
+      { to: "/assistant", label: "AI Assistant", icon: Bot },
+      { to: "/dye-library", label: "Dye Library", icon: Droplets },
+    ],
+  },
+  {
+    label: "Your data",
+    items: [
+      { to: "/history", label: "Analysis History", icon: History },
+      { to: "/designs", label: "Saved Designs", icon: BookMarked },
+      { to: "/reports", label: "Reports", icon: FileText },
+    ],
+  },
+  {
+    label: "Plan",
+    items: [
+      { to: "/pricing", label: "Pricing", icon: CreditCard },
+      { to: "/account", label: "Account", icon: User },
+    ],
+  },
+  {
+    label: "Supply chain",
+    items: [
+      { to: "/studio", label: "EcoPrint Studio", icon: Sparkles },
+      { to: "/dyes", label: "Dye Catalogue", icon: Droplets },
+      { to: "/tailors", label: "Tailor Network", icon: Scissors },
+      { to: "/orders", label: "My Orders", icon: Package },
+      { to: "/farmer", label: "Farmer Portal", icon: Sprout },
+      { to: "/manufacturer", label: "Manufacturer", icon: Factory },
+      { to: "/security", label: "Security Center", icon: ShieldCheck },
+      { to: "/admin", label: "Admin Console", icon: LayoutDashboard },
+    ],
+  },
 ];
+
+const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav className="flex flex-col gap-0.5">
-      {NAV.map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          onClick={onNavigate}
-          className={({ isActive }) =>
-            cn(
-              "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              isActive
-                ? "bg-primary/8 text-primary"
-                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
-            )
-          }
-        >
-          <item.icon className="size-4" />
-          {item.label}
-        </NavLink>
+    <nav className="flex flex-col gap-4">
+      {NAV_GROUPS.map((group) => (
+        <div key={group.label}>
+          <p className="mb-1 px-3 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+            {group.label}
+          </p>
+          <div className="flex flex-col gap-0.5">
+            {group.items.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={onNavigate}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/8 text-primary"
+                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  )
+                }
+              >
+                <item.icon className="size-4" />
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
       ))}
     </nav>
   );
 }
 
+function AIStatusChip() {
+  return (
+    <div className="mb-1.5 rounded-lg border border-amber-400/40 bg-amber-500/10 px-2.5 py-1.5">
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-medium text-amber-800">AI Status</span>
+        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700">
+          <span className="size-1.5 rounded-full bg-amber-500" /> Demo Mode
+        </span>
+      </div>
+      <p className="mt-0.5 text-[9px] leading-3.5 text-amber-700/80">
+        Backend online · demo AI engine active. Add API keys to go live.
+      </p>
+    </div>
+  );
+}
+
 function PageTitle() {
   const { pathname } = useLocation();
-  const item = NAV.find((n) => pathname.startsWith(n.to));
+  const item = ALL_ITEMS.find((n) => pathname.startsWith(n.to));
   return item ? item.label : "Workspace";
 }
 
@@ -119,6 +191,12 @@ function UserMenu() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          onClick={() => navigate("/account")}
+          className="cursor-pointer"
+        >
+          <User className="mr-2 size-4" /> Account
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => navigate("/")}
           className="cursor-pointer"
         >
@@ -143,7 +221,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border/70 bg-background lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border/70 bg-background print:hidden lg:flex">
         <div className="flex h-14 items-center border-b border-border/60 px-4">
           <NavLink to="/" className="flex items-center">
             <Logo />
@@ -153,6 +231,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NavItems />
         </div>
         <div className="border-t border-border/60 p-3">
+          <AIStatusChip />
           <p className="mb-1.5 px-1 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
             Demo role
           </p>
@@ -161,19 +240,20 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Mobile header */}
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/70 bg-background/90 px-3 backdrop-blur lg:hidden">
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/70 bg-background/90 px-3 backdrop-blur print:hidden lg:hidden">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Open menu">
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-3">
+          <SheetContent side="left" className="w-72 p-3">
             <div className="mb-4 flex items-center px-2 pt-1">
               <Logo />
             </div>
             <NavItems onNavigate={() => setSheetOpen(false)} />
             <div className="mt-4 border-t pt-3">
+              <AIStatusChip />
               <p className="mb-1.5 px-1 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                 Demo role
               </p>
@@ -188,11 +268,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         <UserMenu />
       </header>
 
-      <div className="lg:pl-60">
-        <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      <div className="lg:pl-64">
+        <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8 print:max-w-none print:p-0">
           {children}
         </main>
       </div>
+
+      <ChatWidget />
     </div>
   );
 }

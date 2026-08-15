@@ -278,7 +278,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           )}
 
           <div className="py-4 px-6 text-xs text-center text-muted-foreground bg-muted border-t rounded-b-lg">
-            AI Eco Threads · EcoPrint AI · Secure Natural Fashion
+            EcoPrint AI · Secure Natural Fashion
           </div>
         </Card>
         </div>

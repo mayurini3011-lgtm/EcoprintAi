@@ -1,16 +1,16 @@
 {
-  "name": "AI Eco Threads",
+  "name": "EcoPrint AI",
   "short_name": "EcoPrint AI",
-  "description": "EcoPrint AI — botanical designs printed in natural dye, sealed in a verifiable supply chain.",
+  "description": "EcoPrint AI — analyze fabrics, predict color retention, optimize natural dyeing conditions, and create sustainable textile designs with AI.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b0f0d",
-  "theme_color": "#0b0f0d",
+  "background_color": "#f7faf6",
+  "theme_color": "#1f7a4d",
   "icons": [
     {
-      "src": "/logo.png",
+      "src": "/logo.svg",
       "sizes": "any",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]

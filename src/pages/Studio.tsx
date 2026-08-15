@@ -344,7 +344,7 @@ export default function Studio() {
               active
                 ? "border-primary bg-primary text-primary-foreground"
                 : done
-                  ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300 cursor-pointer hover:bg-emerald-500/20"
+                  ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-700 cursor-pointer hover:bg-emerald-500/20"
                   : "border-border bg-background text-muted-foreground",
             )}
           >
@@ -802,7 +802,7 @@ export default function Studio() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="text-sm font-semibold">{f.name}</p>
-                    <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-300">
+                    <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
                       {f.sustainabilityScore}/100
                     </span>
                   </div>
@@ -934,8 +934,8 @@ export default function Studio() {
                       {t.shopName} · {t.location}
                     </p>
                   </div>
-                  <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-amber-300">
-                    <Star className="size-3 fill-amber-400 text-amber-400" />
+                  <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-amber-700">
+                    <Star className="size-3 fill-amber-500 text-amber-600" />
                     {t.rating.toFixed(1)}
                   </span>
                 </div>
@@ -1169,7 +1169,7 @@ export default function Studio() {
         <div className="space-y-6">
           <Card className="shadow-none border-border/70">
             <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
-              <span className="flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+              <span className="flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-700">
                 <CheckCircle2 className="size-8" />
               </span>
               <div>

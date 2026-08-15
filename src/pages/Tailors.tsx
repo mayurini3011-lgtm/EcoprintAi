@@ -97,8 +97,8 @@ export default function Tailors() {
               </div>
 
               <div className="mt-3 flex items-center gap-2 text-xs">
-                <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.5 font-semibold text-amber-300">
-                  <Star className="size-3 fill-amber-400 text-amber-400" />
+                <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.5 font-semibold text-amber-700">
+                  <Star className="size-3 fill-amber-500 text-amber-600" />
                   {t.rating.toFixed(1)}
                 </span>
                 <span className="text-muted-foreground">{t.reviews} reviews</span>

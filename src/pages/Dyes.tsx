@@ -106,12 +106,12 @@ export default function Dyes() {
 
               <div className="mt-3 space-y-1.5 border-t border-border/60 pt-3 text-xs">
                 <div className="flex items-center gap-2">
-                  <Sprout className="size-3.5 text-emerald-400" />
+                  <Sprout className="size-3.5 text-emerald-700" />
                   <span className="text-muted-foreground">Source:</span>
                   <span className="font-medium">{dye.farmerName}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Factory className="size-3.5 text-sky-400" />
+                  <Factory className="size-3.5 text-sky-700" />
                   <span className="text-muted-foreground">Manufactured:</span>
                   <span className="font-medium">{dye.manufacturerName}</span>
                 </div>
@@ -123,7 +123,7 @@ export default function Dyes() {
               </div>
 
               <p className="mt-3 flex items-start gap-1.5 text-[11px] leading-4 text-muted-foreground">
-                <Leaf className="mt-0.5 size-3 shrink-0 text-emerald-400" />
+                <Leaf className="mt-0.5 size-3 shrink-0 text-emerald-700" />
                 {dye.sustainabilityInfo}
               </p>
 
@@ -147,7 +147,7 @@ export default function Dyes() {
 
               {dye.verifiedAt && (
                 <p className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
-                  <ShieldCheck className="size-3 text-emerald-400" />
+                  <ShieldCheck className="size-3 text-emerald-700" />
                   Verified {formatDate(dye.verifiedAt)} · Mordant: {dye.mordant}
                 </p>
               )}
@@ -166,7 +166,7 @@ export default function Dyes() {
         <Card className="shadow-none border-border/70">
           <CardContent className="p-5">
             <p className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Sprout className="size-4 text-emerald-400" /> Farm sources
+              <Sprout className="size-4 text-emerald-700" /> Farm sources
             </p>
             <div className="space-y-2">
               {(farmers ?? []).map((f) => (
@@ -189,7 +189,7 @@ export default function Dyes() {
         <Card className="shadow-none border-border/70">
           <CardContent className="p-5">
             <p className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Factory className="size-4 text-sky-400" /> Manufacturers
+              <Factory className="size-4 text-sky-700" /> Manufacturers
             </p>
             <div className="space-y-2">
               {(manufacturers ?? []).map((m) => (
@@ -210,7 +210,7 @@ export default function Dyes() {
                     {m.certifications.map((c) => (
                       <span
                         key={c}
-                        className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-medium text-emerald-300"
+                        className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-medium text-emerald-700"
                       >
                         {c}
                       </span>

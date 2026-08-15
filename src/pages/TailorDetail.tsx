@@ -76,8 +76,8 @@ export default function TailorDetail() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-500/15 px-2.5 py-1.5 font-semibold text-amber-300">
-              <Star className="size-4 fill-amber-400 text-amber-400" />
+            <span className="inline-flex items-center gap-1 rounded-lg bg-amber-500/15 px-2.5 py-1.5 font-semibold text-amber-700">
+              <Star className="size-4 fill-amber-500 text-amber-600" />
               {tailor.rating.toFixed(1)}
             </span>
             <span className="text-xs text-muted-foreground">
@@ -133,7 +133,7 @@ export default function TailorDetail() {
             </div>
           </div>
 
-          <p className="mt-4 flex items-start gap-1.5 rounded-lg bg-emerald-500/10 p-3 text-[11px] leading-4 text-emerald-300">
+          <p className="mt-4 flex items-start gap-1.5 rounded-lg bg-emerald-500/10 p-3 text-[11px] leading-4 text-emerald-700">
             <ShieldCheck className="mt-0.5 size-3.5 shrink-0" />
             Vetted partner: background-verified, works exclusively with
             natural dyes and sustainable fabrics, and accepts EcoPrint AI

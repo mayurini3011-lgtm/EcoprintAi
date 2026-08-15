@@ -1,180 +1,134 @@
-# AI Eco Threads — EcoPrint AI
+# EcoPrint AI
 
-> **From plant to personalized fashion — designed by AI, protected by cybersecurity.**
+**AI-Powered Natural Dye Optimization & Fabric Color Retention Analysis**
 
-AI Eco Threads runs **EcoPrint AI**, a hackathon MVP that connects **Farmers → Natural Dye Manufacturers → Fabric → Customers → AI Design → Tailors**, where every finished garment carries a cryptographically sealed digital identity that anyone can verify by scanning a QR code.
+> Analyze fabrics, predict color retention, optimize natural dyeing conditions, and create sustainable textile designs with AI. — *From plant to personalized fashion — designed by AI, protected by cybersecurity.*
 
----
-
-## The Problem
-
-Counterfeit sustainability claims and opaque supply chains make it impossible for customers to know whether "natural dye" products are authentic. Batch records can be edited after the fact, certifications duplicated, and provenance silently rewritten.
-
-## The Solution
-
-An AI-powered fashion platform with a **cryptographically verifiable supply chain**:
-
-- Upload a flower or leaf → **EcoPrint AI** identifies the botanical, extracts its pigments, and generates bespoke garment designs
-- Browse and search the **dye catalogue** and **tailor network**, open full detail pages for any batch or profile
-- Book a **delivery slot**, choose a payment method, and leave a note for your tailor at checkout
-- The finished garment receives a **tamper-evident identity** (`NF-2026-000125`) built from a **SHA-256 hash chain** — change any historical record and the verification breaks, provably
-- An **AI risk scanner** flags suspicious farmer/manufacturer documentation (duplicate certs, mismatched quantities, impossible dates, manipulated metadata)
-- **Role-based dashboards** for customers, farmers, manufacturers and admins
-
-> **Blockchain is NOT the core technology.** The innovation is *cryptographically verifiable supply-chain integrity + AI-powered risk detection*. Blockchain is mentioned only as a possible future extension.
+EcoPrint AI is a professional, demo-first AI SaaS for sustainable textiles. It is built on **Vite + React 19 + TypeScript + Tailwind CSS v4 (shadcn/ui) + Convex** (database, auth, backend functions). Everything runs in **Demo Mode with zero paid APIs** — every simulated result is clearly labelled as such.
 
 ---
 
-## 🚀 Quick start
+## Features
 
-```bash
-bun install
-bun convex dev --once      # codegen + validate Convex functions
-bun run dev                # start the app
-```
-
-The app auto-seeds a complete demo dataset on first load (5 farmers, 3 manufacturers, 10 dye batches, 10 fabrics, 5 tailors, 10 designs, 10 garments with full hash-chained supply chains, orders, alerts and audit logs). No API keys required — the AI runs in deterministic mock mode.
-
-### Environment
-
-No `.env` variables are required for the MVP. The template's Convex URL (`VITE_CONVEX_URL`) and auth wiring are already configured. If you later integrate a real AI provider, keys go in the project's Keys/API keys UI — never in code.
-
----
-
-## 🎬 The 3-minute demo (the main flow)
-
-1. **EcoPrint Studio** → upload a flower (or pick from the botanical gallery).
-   EcoPrint AI shows an identification card — species, confidence, palette, symbolism.
-2. **AI Concepts** → four generated design cards appear.
-3. Pick one → **Customize** (garment type, colourway, pattern density, sleeve, neck, border, motif) with a live preview.
-4. Choose a **natural dye** batch and a **fabric**.
-5. Enter **measurements** → pick a **tailor** and **book your delivery slot**.
-6. **Checkout** → choose a payment method, leave a note for the tailor, and **Pay & place order** → the system mints garment ID **`NF-2026-000125`**.
-7. Watch the **secure supply-chain timeline** build (7 hash-chained events) and scan the **QR code**.
-8. Open **`/verify/NF-2026-000124`** (or the new garment) → 🟢 AUTHENTIC / VERIFIED → "Verify Supply Chain Integrity".
-9. Open the **Security Center** → **Simulate Tampering**.
-10. 🔴 **TAMPERING DETECTED** — the dye record's hash no longer matches the stored integrity chain.
-11. **Restore Record** → 🟢 VERIFIED AGAIN. *This is the demo's climax.*
-
-## 🔑 Demo access
-
-Use **"Continue as guest — instant demo access"** on the auth page (or any email + OTP code). Then use the **demo role switcher** in the sidebar to tour every portal:
-
-| Role | What you see |
-| --- | --- |
-| Customer | EcoPrint Studio, Dye Catalogue, Tailor Network, My Orders |
-| Farmer | Batch submission + AI risk scan (Green Valley Farm) |
-| Manufacturer | Raw batch → dye batch processing (Aravalli Naturals) |
-| Admin | Security Center tamper demo + Admin analytics |
-| Tailor | Marketplace profiles (demo view) |
+| Area | What it does |
+|---|---|
+| **Fabric Analysis** (`/analyze`) | Upload a fabric photo → EcoPrint measures the dominant colour (real RGB extraction), runs the retention model, and reports fabric detected, dominant colour + RGB/LAB, CIEDE2000 colour difference (ΔE), retention % + category, dyeing temperature/duration, mordant, dye/fabric/washing recommendations, sustainability score and AI confidence. |
+| **Washing-cycle analysis** | 1 / 5 / 10 / 20 / 30 wash cycles with a retention fade chart (initial colour → after wash → ΔE → retention %). |
+| **EcoPrint AI Assistant** (`/assistant` + floating button) | Context-aware chatbot (rule engine in Demo Mode; pluggable LLM). Knows dyes, fabrics, mordants, wash cycles, retention — and can explain your latest analysis. |
+| **AI Fabric Design Studio** (`/design-studio`) | Prompt + fabric (Cotton/Silk/Linen/Wool/Jute) + dye + pattern (8) + palette (6) → design preview. Demo mode renders deterministic procedural SVG artwork; Download / Regenerate / Save / Variation all work offline. |
+| **Natural Dye Library** (`/dye-library`) | 12 dyes (Indigo, Turmeric, Hibiscus, Madder, Pomegranate, Marigold, Walnut, Neem, Henna, Onion, Beetroot, Tea) with source, colour, suitable fabrics, mordants, dyeing conditions, sustainability. |
+| **Analysis History** (`/history`) | Every analysis is stored (Convex DB — swap for SQLite/Postgres later if you host your own). View / Delete / Download Report. |
+| **Reports** (`/reports`) | Full printable report (logo, fabric, dye, pattern, before/after colour, retention, ΔE, recommendations, dyeing conditions, washing, sustainability) + required disclaimer. "Download PDF" → browser print-to-PDF. |
+| **Dashboard** (`/dashboard`) | Stats (total analyses, avg retention, best dye, designs generated, sustainability score), retention charts, recent analyses, quick actions. |
+| **Pricing + Checkout** (`/pricing`, `/checkout`) | FREE ₹0 / PRO ₹199/mo / BUSINESS ₹499/mo with GST breakdown and UPI/Card/Debit/Net-banking UI. **Demo Payment Mode** — simulated, clearly labelled, Razorpay-ready. |
+| **Account** (`/account`) | Profile, demo plan, honest AI-status indicator. |
+| **Supply chain (kept)** | EcoPrint Studio (botanical → garment), Dye Catalogue, Tailor Network, Orders, Farmer Portal, Manufacturer, Security Center (SHA-256 tamper demo), Admin Console, public `/verify/:id` pages. |
 
 ---
 
-## 🗺️ Routes
-
-| Route | Page |
-| --- | --- |
-| `/` | Landing |
-| `/auth` | Sign in / guest access |
-| `/dashboard` | **EcoPrint Studio** — the customer flow |
-| `/dyes` | Dye catalogue (searchable) |
-| `/dyes/:code` | Dye batch detail + provenance lineage |
-| `/tailors` | Tailor network (searchable) |
-| `/tailors/:code` | Tailor profile detail |
-| `/orders` | Orders + checkout details + garment traceability |
-| `/farmer` | Farmer portal |
-| `/manufacturer` | Manufacturer portal |
-| `/security` | **Security Center** (tamper demo) |
-| `/admin` | Admin console + charts |
-| `/verify/:garmentId` | Public QR verification (no auth) |
-
----
-
-## 🧠 AI layer
-
-`src/lib/ai/` defines an **`AIService` abstraction** with four capabilities:
-
-- `identifyPlant(input)` — botanical identification
-- `generateColourPalette(plant)` — natural colour recommendation
-- `generateDesigns(plant, options)` — garment design generation
-- `analyzeRisk(data)` — fraud/risk detection over documentation
-
-The shipped **`MockAIService`** is deterministic (same image → same result, perfect for demos) and actually "sees" the uploaded photo: it computes a **SHA-256 of the image bytes** and extracts **dominant colours** from a downscaled canvas, then matches hue clusters against a 12-species botanical catalog. Design cards are rendered as SVG garment silhouettes coloured from the plant's palette.
-
-**Going live with a real AI later:** implement the same interface in a class that calls a hosted vision/LLM API (e.g., a Convex action using the VLY integration gateway described in `integrations.md`) and return it from `getAIService()` in `src/lib/ai/index.ts`. No UI changes needed.
-
----
-
-## 🔐 Cybersecurity layer
-
-Everything lives in `src/convex/security.ts` with inline comments explaining *why*:
-
-- **Canonical JSON** — records are serialized with sorted keys so identical logical records always produce identical bytes.
-- **SHA-256 hashing** — every supply-chain event stores `hash = SHA-256(canonical(payload))` (Web Crypto API, no external service).
-- **Hash chaining** — each event stores `prevHash`, linking it to the previous event. Re-ordering or splicing events breaks the chain.
-- **Tamper detection** — verification recomputes every hash and compares against the stored digests, reporting exactly which record failed.
-- **RBAC** — `requireRole()` guards mutations; roles are Customer / Farmer / Manufacturer / Tailor / Admin. The demo role switcher genuinely changes the Convex user's role.
-- **Audit logs** — every security-relevant action is append-only with actor, entity and timestamp.
-- **Server-side validation** — quantities, dates, material names and batch codes are validated in Convex mutations (see `farmer.ts`, `manufacturer.ts`, `orders.ts`).
-- **Privacy by design** — the public QR record (`getGarmentPublic`) exposes *only* provenance; customer identity, measurements and pricing never leave the private order.
-- **No secrets in code** — API keys live in the Keys UI / environment, never hard-coded.
-- **AI fraud detection** — a rule engine (`MockAIService.analyzeRisk`) scores missing info, inconsistent batch IDs, impossible dates, mismatched quantities, duplicate certification numbers and manipulated image metadata.
-
----
-
-## 🗄️ Data model (Convex)
-
-`users`, `farmers`, `manufacturers`, `rawMaterialBatches`, `dyes`, `fabrics`, `tailors`, `designs`, `orders` (incl. delivery slot, payment method and tailor notes), `garments`, `supplyChainEvents` (hash chain), `securityAlerts`, `auditLogs`, `aiAnalyses`.
-
-The schema is in `src/convex/schema.ts`; the seeder is `src/convex/seed.ts` (idempotent, with a reset mutation exposed in the Security Center).
-
----
-
-## 🧱 Architecture notes
-
-- **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS v4 + shadcn/ui + Framer Motion + recharts.
-- **Theme:** dark by default — near-black green-tinted canvas, eco-emerald primary, cyan accent, Space Grotesk display type, monospace batch/hash styling.
-- **Backend/DB:** Convex (the template's managed backend + database) — replaces Express/PostgreSQL while keeping the same mental model: typed functions, validated args, reactive queries.
-- **QR:** `qrcode` (renders verification URLs as data-URL images).
-- **Seed data:** fictional but realistic (Green Valley Farm, Aravalli Naturals, Ananya Tailors, …).
-- **Demo-friendly resets:** Security Center has *Simulate Tampering*, *Restore Record* and *Reset demo data*.
-
----
-
-## 🔮 Future scope
-
-- Real IoT/logistics tracking (batch temperature, moisture, GPS)
-- Real farmer onboarding with KYC and field verification
-- Blockchain anchoring of chain hashes (optional, as a notarization layer)
-- Laboratory dye verification + computer vision for dye/plant analysis
-- Real payments and production logistics
-- Real hosted AI vision model for botanical identification
-
----
-
-## 📦 Project structure (key files)
+## Architecture
 
 ```
 src/
-├── convex/                 # Backend (Convex)
-│   ├── schema.ts           # Data model + roles
-│   ├── security.ts         # SHA-256 hash chain, verification, tamper demo
-│   ├── orders.ts           # Order placement → garment minting
-│   ├── farmer.ts           # Farmer batch submission
-│   ├── manufacturer.ts     # Dye batch processing
-│   ├── admin.ts            # Platform stats
-│   ├── seed.ts             # Demo data (idempotent)
-│   └── chain_specs.ts      # Canonical chain event builder
-├── lib/ai/                 # AIService abstraction + mock + vision
-│   ├── types.ts            # Service interfaces
-│   ├── plants.ts           # Botanical catalog
-│   ├── mock.ts             # Deterministic mock AI + risk engine
-│   ├── vision.ts           # Image hash + dominant colour extraction
-│   └── index.ts            # Service factory
-├── components/
-│   ├── garment/            # SVG previews, palette, timeline, hash table
-│   ├── security/           # QR code, stat cards
-│   └── layout/             # AppShell, demo role switcher
-└── pages/                  # Landing, Studio, Dyes (+detail), Tailors (+detail),
-                            # Orders, Farmer, Manufacturer, Security, Admin, Verify
+├── main.tsx                 # Router + providers (lazy routes)
+├── index.css                # Light green/natural-earth SaaS theme (dark tokens kept)
+├── convex/                  # Backend (Convex = DB + functions + HTTP API)
+│   ├── schema.ts            # All tables (auth, catalog, fabricAnalyses, savedDesigns, …)
+│   ├── analysis.ts          # Retention model (predictAnalysis) + history CRUD
+│   ├── chat.ts              # Assistant action — live LLM or demo engine
+│   ├── designStudio.ts      # Design-generation action — image API or demo spec
+│   ├── designsData.ts       # Saved-design persistence
+│   ├── payments.ts          # createOrder / verifyPayment — demo or Razorpay
+│   ├── color.ts             # sRGB↔CIELAB, CIEDE2000, fade prediction (real math)
+│   ├── constants.ts         # Dye knowledge base, patterns, palettes, plans
+│   ├── http.ts              # REST endpoints (see below)
+│   ├── seed.ts              # Demo data (auto-seeds, additive for existing DBs)
+│   └── …                    # existing supply-chain modules (unchanged)
+├── pages/                   # One file per route
+├── components/chat|design|analysis|garment|security|layout
+└── lib/ (ai, report, format, …)
 ```
+
+### REST endpoints (Convex HTTP API)
+
+Served at the deployment URL, e.g. `https://<project>.convex.site/api/health`:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/health` | Backend status (`{ status: "ok", demoMode: true }`) |
+| `GET /api/dyes` | Dye catalogue snapshot |
+| `GET /api/history` · `POST /api/history` · `DELETE /api/history/:id` | Analysis history |
+| `POST /api/chat` | `{ message, analysis_context }` → assistant reply |
+| `POST /api/generate-design` | `{ prompt, fabric, dye, pattern, palette }` → design |
+| `POST /api/create-order` · `POST /api/verify-payment` | Checkout |
+
+CORS is handled by the Convex platform; no config needed. The web app calls Convex functions directly.
+
+---
+
+## How to run
+
+```bash
+bun install        # install dependencies
+bun convex dev --once   # codegen + validate backend functions (non-interactive)
+bun tsc -b --noEmit     # typecheck
+bun lint                # eslint
+bun run dev             # start the Vite dev server (platform-managed in Freebuff)
+```
+
+The demo data seeds automatically on first load (5 farmers, 3 manufacturers, 12 dyes, 10 fabrics, 5 tailors, garments with hash chains, 4 sample fabric analyses, 3 sample designs).
+
+**Quick demo flow:** sign in as guest → Fabric Analysis (upload photo or use dye reference colour) → watch the result + wash chart → open the AI Assistant and ask *"explain my analysis result"* → AI Design Studio → Generate/Save a design → History → Reports (Download PDF) → Pricing → PRO → Checkout → **Demo Payment** success screen.
+
+---
+
+## Demo Mode vs live APIs
+
+Demo Mode is the default — no keys required, nothing fake about the labels:
+
+| Feature | Demo Mode | Live mode (opt-in) |
+|---|---|---|
+| Assistant | Rule-based engine (`mode: "demo"` returned per reply) | Set `AI_API_KEY` (+ `AI_API_BASE_URL`, `AI_MODEL`) — OpenAI-compatible |
+| Design Studio | Deterministic procedural SVG previews | Set `AI_API_KEY` + `AI_IMAGE_ENDPOINT` — returns a real image URL |
+| Payments | Simulated, clearly labelled "Demo transaction — no real money was charged" | Set `RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET` — real order + HMAC verification |
+| Analysis | Simulated rule model (`mode: "simulated"`) | Plug a real ML model into `predictAnalysis` (same interface) |
+
+**Important:** no secrets live in frontend code. Convex actions read them from `process.env`; in Freebuff, add keys in the **Keys / API keys** tab with these exact names: `AI_API_KEY`, `AI_API_BASE_URL`, `AI_MODEL`, `AI_IMAGE_ENDPOINT`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`. For self-hosted deployments use a `.env` file (a `.env.example` template is described below — never commit a real `.env`).
+
+```bash
+# .env.example (self-hosted deployments)
+DEMO_MODE=true
+AI_API_KEY=
+AI_API_BASE_URL=https://api.openai.com/v1
+AI_MODEL=gpt-4o-mini
+AI_IMAGE_ENDPOINT=
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+VITE_CONVEX_URL=
+CONVEX_SITE_URL=
+```
+
+---
+
+## Adding real AI / payments later
+
+1. **Assistant LLM** — add `AI_API_KEY` (and optionally `AI_API_BASE_URL` / `AI_MODEL`) to the environment. `src/convex/chat.ts` already POSTs to an OpenAI-compatible endpoint with your analysis context in the system prompt. Replies switch to `mode: "live"`.
+2. **Design images** — add `AI_API_KEY` + `AI_IMAGE_ENDPOINT`. `src/convex/designStudio.ts` already POSTs the prompt and returns `{ imageUrl, mode: "model" }`; the studio then renders the returned image instead of the SVG.
+3. **Razorpay** — add `RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET`. `src/convex/payments.ts` creates a real order via the Razorpay REST API and verifies the signature with HMAC-SHA256. The checkout UI keeps the same flow; a "Demo Payment Mode" banner disappears automatically.
+4. **Real retention model** — replace the internals of `predictAnalysis()` in `src/convex/analysis.ts` (same input/output shape) with a trained model or a lab API.
+
+---
+
+## Testing checklist
+
+- [ ] `bun convex dev --once` passes (backend + codegen)
+- [ ] `bun tsc -b --noEmit` passes
+- [ ] `bun lint` passes
+- [ ] Guest sign-in → every page renders, no console errors
+- [ ] Fabric Analysis: upload a JPG/PNG, pick fabric/dye/pattern/washes, results + wash chart appear; bad file shows "Unable to process image…"
+- [ ] Assistant (floating + `/assistant`): ask "Which natural dye is best for cotton?", then after an analysis "Explain my analysis result"
+- [ ] Design Studio: generate → download → regenerate → variation → save → appears in Saved Designs
+- [ ] History: view / delete / download report; Reports: printable + disclaimer
+- [ ] Pricing → Checkout (PRO) → Demo Payment success screen with disclaimer
+- [ ] Mobile viewport: no horizontal scroll
+- [ ] Supply-chain pages still work (Orders, Security Center tamper demo, Verify)

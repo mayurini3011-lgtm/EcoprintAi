@@ -228,10 +228,10 @@ export default function Farmer() {
               className={cn(
                 "rounded-lg border p-3 text-xs",
                 risk.status === "high"
-                  ? "border-rose-400/30 bg-rose-500/10 text-rose-300"
+                  ? "border-rose-400/30 bg-rose-500/10 text-rose-700"
                   : risk.status === "medium"
-                    ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
-                    : "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+                    ? "border-amber-400/30 bg-amber-500/10 text-amber-700"
+                    : "border-emerald-400/30 bg-emerald-500/10 text-emerald-700",
               )}
               >
                 <p className="flex items-center gap-1.5 font-semibold">
@@ -265,7 +265,7 @@ export default function Farmer() {
                 <CardContent className="p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <span className="flex size-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+                      <span className="flex size-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700">
                         <Sprout className="size-4" />
                       </span>
                       <div>

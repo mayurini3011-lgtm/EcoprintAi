@@ -93,7 +93,7 @@ export default function DyeDetail() {
             </p>
             <p className="font-mono text-sm font-semibold">{dye.code}</p>
             {dye.verifiedAt && (
-              <p className="mt-1 flex items-center gap-1 text-[11px] text-emerald-400">
+              <p className="mt-1 flex items-center gap-1 text-[11px] text-emerald-700">
                 <ShieldCheck className="size-3" /> Verified{" "}
                 {formatDate(dye.verifiedAt)}
               </p>
@@ -107,7 +107,7 @@ export default function DyeDetail() {
             <DetailRow label="Mordant" value={dye.mordant} />
           </dl>
           <p className="mt-4 flex items-start gap-2 rounded-xl border border-border/60 bg-muted/50 p-3 text-xs leading-5 text-muted-foreground">
-            <Leaf className="mt-0.5 size-4 shrink-0 text-emerald-400" />
+            <Leaf className="mt-0.5 size-4 shrink-0 text-emerald-700" />
             {dye.sustainabilityInfo}
           </p>
         </CardContent>
@@ -121,7 +121,7 @@ export default function DyeDetail() {
         <Card className="shadow-none border-border/70">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
-              <Sprout className="size-4 text-emerald-400" /> Raw material
+              <Sprout className="size-4 text-emerald-700" /> Raw material
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs">
@@ -173,7 +173,7 @@ export default function DyeDetail() {
         <Card className="shadow-none border-border/70">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
-              <Sprout className="size-4 text-emerald-400" /> Farm source
+              <Sprout className="size-4 text-emerald-700" /> Farm source
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs">
@@ -199,7 +199,7 @@ export default function DyeDetail() {
         <Card className="shadow-none border-border/70">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
-              <Factory className="size-4 text-sky-400" /> Manufacturer
+              <Factory className="size-4 text-sky-700" /> Manufacturer
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs">
@@ -215,7 +215,7 @@ export default function DyeDetail() {
                     <Badge
                       key={c}
                       variant="outline"
-                      className="bg-emerald-500/10 text-[9px] text-emerald-300"
+                      className="bg-emerald-500/10 text-[9px] text-emerald-700"
                     >
                       {c}
                     </Badge>

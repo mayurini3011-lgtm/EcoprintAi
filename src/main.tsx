@@ -13,6 +13,17 @@ import "./index.css";
 // Lazy load route components for better code splitting
 const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
+const Overview = lazy(() => import("./pages/Overview.tsx"));
+const Analyze = lazy(() => import("./pages/Analyze.tsx"));
+const DesignStudio = lazy(() => import("./pages/DesignStudio.tsx"));
+const Assistant = lazy(() => import("./pages/Assistant.tsx"));
+const DyeLibrary = lazy(() => import("./pages/DyeLibrary.tsx"));
+const History = lazy(() => import("./pages/History.tsx"));
+const SavedDesigns = lazy(() => import("./pages/SavedDesigns.tsx"));
+const Reports = lazy(() => import("./pages/Reports.tsx"));
+const Pricing = lazy(() => import("./pages/Pricing.tsx"));
+const Checkout = lazy(() => import("./pages/Checkout.tsx"));
+const Account = lazy(() => import("./pages/Account.tsx"));
 const Studio = lazy(() => import("./pages/Studio.tsx"));
 const Dyes = lazy(() => import("./pages/Dyes.tsx"));
 const DyeDetail = lazy(() => import("./pages/DyeDetail.tsx"));
@@ -141,7 +152,117 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <AppShell>
+                      <Overview />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/studio"
+                element={
+                  <RequireAuth>
+                    <AppShell>
                       <Studio />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/analyze"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Analyze />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/design-studio"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <DesignStudio />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/assistant"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Assistant />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dye-library"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <DyeLibrary />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/history"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <History />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/designs"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <SavedDesigns />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/reports"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Reports />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/pricing"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Pricing />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Checkout />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <Account />
                     </AppShell>
                   </RequireAuth>
                 }

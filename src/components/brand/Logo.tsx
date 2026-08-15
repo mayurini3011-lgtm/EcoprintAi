@@ -52,7 +52,7 @@ export function Logo({
           wordmarkClassName,
         )}
       >
-        AI Eco Threads
+        EcoPrint AI
         <span className="text-primary/70">.</span>
       </span>
     </span>

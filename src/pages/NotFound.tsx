@@ -38,7 +38,7 @@ export default function NotFound() {
           to the studio and start from a botanical instead.
         </p>
         <Button asChild className="mt-8">
-          <Link to="/">Back to AI Eco Threads</Link>
+          <Link to="/">Back to EcoPrint AI</Link>
         </Button>
       </div>
     </motion.div>

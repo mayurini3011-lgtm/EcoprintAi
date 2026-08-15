@@ -63,7 +63,7 @@ export default function Verify() {
           code or try another garment.
         </p>
         <Button asChild variant="outline">
-          <Link to="/">Back to AI Eco Threads</Link>
+          <Link to="/">Back to EcoPrint AI</Link>
         </Button>
       </div>
     );
@@ -117,13 +117,13 @@ export default function Verify() {
                 )}
               </p>
               {valid === false ? (
-                <p className="text-xs text-rose-300/90">
+                <p className="text-xs text-rose-700/90">
                   The integrity chain is broken — a supply-chain record was
                   modified after it was sealed. Do not trust this garment's
                   provenance.
                 </p>
               ) : (
-                <p className="text-xs text-emerald-300/90">
+                <p className="text-xs text-emerald-700/90">
                   This garment's provenance is cryptographically verified and
                   tamper-evident.
                 </p>

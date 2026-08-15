@@ -41,18 +41,18 @@ export function PaletteSwatches({
 }
 
 const TONES: Record<string, string> = {
-  verified: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
-  delivered: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
-  finished: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
-  pending: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
-  limited: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
-  available: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
-  flagged: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
-  rejected: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
+  verified: "bg-emerald-500/15 text-emerald-700 ring-emerald-400/30",
+  delivered: "bg-emerald-500/15 text-emerald-700 ring-emerald-400/30",
+  finished: "bg-emerald-500/15 text-emerald-700 ring-emerald-400/30",
+  pending: "bg-amber-500/15 text-amber-700 ring-amber-400/30",
+  limited: "bg-amber-500/15 text-amber-700 ring-amber-400/30",
+  available: "bg-emerald-500/15 text-emerald-700 ring-emerald-400/30",
+  flagged: "bg-rose-500/15 text-rose-700 ring-rose-400/30",
+  rejected: "bg-rose-500/15 text-rose-700 ring-rose-400/30",
   out: "bg-zinc-500/15 text-zinc-300 ring-zinc-400/30",
-  low: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
-  medium: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
-  high: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
+  low: "bg-emerald-500/15 text-emerald-700 ring-emerald-400/30",
+  medium: "bg-amber-500/15 text-amber-700 ring-amber-400/30",
+  high: "bg-rose-500/15 text-rose-700 ring-rose-400/30",
 };
 
 const DOTS: Record<string, string> = {
