@@ -73,7 +73,7 @@ export function CheckoutSection() {
               prepared. Sign in to track it and receive its secure garment ID.
             </p>
             <Button asChild className="mt-6 gap-2 rounded-full">
-              <Link to="/auth?returnTo=/orders">Track my order</Link>
+              <Link to="/auth?returnTo=/orders/garments">Track my order</Link>
             </Button>
           </div>
         </Reveal>
@@ -110,7 +110,11 @@ export function CheckoutSection() {
                     >
                       <div className="w-16 shrink-0 overflow-hidden rounded-xl ring-1 ring-border">
                         <DesignCanvas
-                          spec={{ seed: item.seed, pattern: item.pattern, palette: item.palette }}
+                          spec={{
+                            seed: item.seed ?? 1,
+                            pattern: item.pattern ?? "Floral",
+                            palette: item.palette ?? [],
+                          }}
                           className="w-full"
                         />
                       </div>

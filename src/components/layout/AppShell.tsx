@@ -82,7 +82,7 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
       { to: "/studio", label: "EcoPrint Studio", icon: Sparkles },
       { to: "/dyes", label: "Dye Catalogue", icon: Droplets },
       { to: "/tailors", label: "Tailor Network", icon: Scissors },
-      { to: "/orders", label: "My Orders", icon: Package },
+      { to: "/orders/garments", label: "My Orders", icon: Package },
       { to: "/farmer", label: "Farmer Portal", icon: Sprout },
       { to: "/manufacturer", label: "Manufacturer", icon: Factory },
       { to: "/security", label: "Security Center", icon: ShieldCheck },

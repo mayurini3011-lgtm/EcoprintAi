@@ -22,6 +22,15 @@ const SUGGESTIONS = [
   "Explain my analysis result",
 ];
 
+/** One-tap shopping & design shortcuts — each sends a real question. */
+const QUICK_ACTIONS = [
+  { label: "Find a Dye", message: "Find a natural dye for a deep blue shade on cotton." },
+  { label: "Choose a Colour", message: "Suggest a colour palette for an elegant summer dress." },
+  { label: "Recommend Yarn", message: "Recommend a sustainable yarn that takes natural dyes well." },
+  { label: "Create Design", message: "Create a design: traditional indigo floral pattern on organic cotton." },
+  { label: "Shop Yarns", message: "Which yarns in the shop are best for natural dyeing?" },
+];
+
 export function ChatPanel({ className }: { className?: string }) {
   const chat = useAction(api.chat.chat);
   const analyses = useQuery(api.analysis.listAnalyses);
@@ -155,19 +164,33 @@ export function ChatPanel({ className }: { className?: string }) {
         )}
       </div>
 
-      {/* Suggestions */}
+      {/* Quick actions + suggestions */}
       {messages.length <= 1 && (
-        <div className="flex flex-wrap gap-1.5 px-4 pb-2">
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => void send(s)}
-              className="rounded-full border border-border/80 bg-background px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-            >
-              {s}
-            </button>
-          ))}
+        <div className="space-y-1.5 px-4 pb-2">
+          <div className="flex flex-wrap gap-1.5">
+            {QUICK_ACTIONS.map((a) => (
+              <button
+                key={a.label}
+                type="button"
+                onClick={() => void send(a.message)}
+                className="rounded-full border border-primary/25 bg-primary/5 px-2.5 py-1 text-[11px] font-medium text-primary transition-colors hover:bg-primary/10"
+              >
+                {a.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => void send(s)}
+                className="rounded-full border border-border/80 bg-background px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 

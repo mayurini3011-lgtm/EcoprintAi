@@ -1,21 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BotanicalImage } from "@/components/brand/BotanicalImage";
-import { DesignCanvas } from "@/components/design/DesignCanvas";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, CheckCircle2, FlaskConical, Palette, ScanLine, Sparkles } from "lucide-react";
+import { Bot, CheckCircle2, FlaskConical, Palette, ScanLine, Sparkles } from "lucide-react";
 import { Link } from "react-router";
-
-const HERO_SPEC = {
-  seed: 12041,
-  pattern: "Tie Dye",
-  palette: [
-    { name: "Deep Indigo", hex: "#2b4a9b" },
-    { name: "Midnight", hex: "#1f3a7a" },
-    { name: "Stone", hex: "#c8c2b4" },
-    { name: "Cream", hex: "#f6f1e7" },
-  ],
-};
 
 const FLOAT_CARDS = [
   { icon: ScanLine, title: "AI Fabric Analysis", text: "Retention, ΔE & dye conditions in seconds" },
@@ -114,12 +102,6 @@ export function LandingHero() {
               </div>
               <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">88% retention</span>
             </div>
-          </div>
-
-          {/* Floating design tile */}
-          <div className="animate-float-slow absolute -left-6 top-10 hidden w-40 rotate-[-4deg] overflow-hidden rounded-2xl border border-border/60 bg-card p-1.5 shadow-xl shadow-primary/10 sm:block lg:-left-12">
-            <DesignCanvas spec={HERO_SPEC} className="w-full rounded-xl" />
-            <p className="px-1 pt-1.5 text-[9px] font-medium tracking-wide text-muted-foreground uppercase">AI pattern preview</p>
           </div>
 
           {/* Floating ingredient photo */}

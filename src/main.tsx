@@ -31,6 +31,14 @@ const DyeDetail = lazy(() => import("./pages/DyeDetail.tsx"));
 const Tailors = lazy(() => import("./pages/Tailors.tsx"));
 const TailorDetail = lazy(() => import("./pages/TailorDetail.tsx"));
 const Orders = lazy(() => import("./pages/Orders.tsx"));
+const ShopOrders = lazy(() => import("./pages/ShopOrders.tsx"));
+const Shop = lazy(() => import("./pages/Shop.tsx"));
+const YarnDetail = lazy(() => import("./pages/YarnDetail.tsx"));
+const CartPage = lazy(() => import("./pages/CartPage.tsx"));
+const ShopCheckout = lazy(() => import("./pages/ShopCheckout.tsx"));
+const Colors = lazy(() => import("./pages/Colors.tsx"));
+const Collections = lazy(() => import("./pages/Collections.tsx"));
+const NaturalDyes = lazy(() => import("./pages/NaturalDyes.tsx"));
 const Farmer = lazy(() => import("./pages/Farmer.tsx"));
 const Manufacturer = lazy(() => import("./pages/Manufacturer.tsx"));
 const Security = lazy(() => import("./pages/Security.tsx"));
@@ -161,6 +169,15 @@ createRoot(document.getElementById("root")!).render(
             <AnimatedRoutes>
               <Route path="/" element={<Landing />} />
               <Route path="/verify/:garmentId" element={<Verify />} />
+              {/* Public storefront */}
+              <Route path="/colors" element={<Colors />} />
+              <Route path="/natural-dyes" element={<NaturalDyes />} />
+              <Route path="/collections" element={<Collections />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/:id" element={<YarnDetail />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<ShopCheckout />} />
+              <Route path="/orders" element={<ShopOrders />} />
               <Route
                 path="/auth"
                 element={<AuthPage redirectAfterAuth="/dashboard" />}
@@ -266,7 +283,7 @@ createRoot(document.getElementById("root")!).render(
                 }
               />
               <Route
-                path="/checkout"
+                path="/checkout/plan"
                 element={
                   <RequireAuth>
                     <AppShell>
@@ -326,7 +343,7 @@ createRoot(document.getElementById("root")!).render(
                 }
               />
               <Route
-                path="/orders"
+                path="/orders/garments"
                 element={
                   <RequireAuth>
                     <AppShell>

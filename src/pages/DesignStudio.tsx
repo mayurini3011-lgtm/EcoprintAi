@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DesignCanvas, downloadSvgElement, type DesignSpec } from "@/components/design/DesignCanvas";
+import { FabricPreview } from "@/components/design/FabricPreview";
 import {
   DESIGN_FABRICS,
   DYE_KNOWLEDGE,
@@ -24,11 +25,19 @@ import {
   PATTERNS,
   type PaletteColor,
 } from "@/convex/constants";
+import { useCart } from "@/lib/cart";
+import {
+  CLASSIC_COLOURS,
+  formatINR,
+  naturalColourCards,
+  recommendYarnFor,
+} from "@/lib/shop";
 import { useAction, useMutation, useQuery } from "convex/react";
-import { Download, Loader2, RefreshCcw, Save, Sparkles, Wand2, Zap } from "lucide-react";
+import { Download, Leaf, Loader2, RefreshCcw, Save, ShoppingBag, Sparkles, Wand2, Zap } from "lucide-react";
 import { useRef, useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface ProviderOption {
   id: string;
@@ -58,6 +67,7 @@ export default function DesignStudio() {
   const linkDye = searchParams.get("dye");
   const linkFabric = searchParams.get("fabric");
   const linkPattern = searchParams.get("pattern");
+  const linkColour = searchParams.get("colour");
 
   const [prompt, setPrompt] = useState("Soft flowing florals with a hand-crafted feel");
   const [fabric, setFabric] = useState(
@@ -69,6 +79,56 @@ export default function DesignStudio() {
   );
   const [paletteName, setPaletteName] = useState("Indigo blue");
   const [provider, setProvider] = useState("demo");
+
+  // Colour explorer — natural dyes + classic colours drive the live preview.
+  // Deep-link: /design-studio?colour=Blue&dye=Indigo
+  const linkIsClassic =
+    !!linkColour && CLASSIC_COLOURS.some((c) => c.name === linkColour);
+  const linkIsNatural =
+    !!linkDye && DYE_KNOWLEDGE[linkDye];
+  const [colourTab, setColourTab] = useState<"natural" | "classic">(
+    linkIsClassic ? "classic" : "natural",
+  );
+  const [colour, setColour] = useState(
+    linkIsClassic
+      ? (linkColour as string)
+      : linkIsNatural
+        ? (linkDye as string)
+        : "Indigo",
+  );
+
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+
+  const naturalCards = naturalColourCards();
+  const colourInfo =
+    naturalCards.find((c) => c.name === colour) ??
+    CLASSIC_COLOURS.find((c) => c.name === colour);
+  const colourHex = colourInfo?.hex ?? DYE_KNOWLEDGE[colour]?.hex ?? "#1f3d2b";
+  const colourRetention = colourInfo?.retention ?? DYE_KNOWLEDGE[colour]?.retentionBase ?? 80;
+  const colourSustainability = colourInfo?.sustainability ?? DYE_KNOWLEDGE[colour]?.sustainability ?? "Plant-based, traceable dye.";
+  const { yarn, rationale } = recommendYarnFor(colour);
+
+  const addYarnToCart = () => {
+    addItem({
+      id: yarn.id,
+      title: yarn.name,
+      price: yarn.price,
+      kind: "yarn",
+      unit: yarn.weight,
+      colour: yarn.colours[0],
+      material: yarn.material,
+      image: yarn.image,
+    });
+    toast.success(`${yarn.name} added to cart`);
+  };
+
+  const pickColour = (name: string, isNatural: boolean) => {
+    setColour(name);
+    setColourTab(isNatural ? "natural" : "classic");
+    if (isNatural && DYE_KNOWLEDGE[name]) setDye(name);
+  };
+
 
   const [generating, setGenerating] = useState(false);
   const [spec, setSpec] = useState<DesignSpec | null>(null);
@@ -164,11 +224,11 @@ export default function DesignStudio() {
             EcoPrint AI · AI Fabric Design Studio
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Generate natural-dye textile designs
+            AI Design Studio
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Describe a design, pick a fabric, dye, pattern, palette and an image
-            model — and let EcoPrint AI compose a preview.
+            Pick a colour, watch the fabric preview update, then generate,
+            save and shop the matching yarn.
           </p>
         </div>
         {spec && (
@@ -192,6 +252,113 @@ export default function DesignStudio() {
       <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
         {/* Controls */}
         <div className="space-y-5">
+          {/* Live fabric preview */}
+          <Card className="shadow-none border-border/70">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Live fabric preview</CardTitle>
+              <CardDescription>
+                Choose a colour — the fabric tint updates instantly, keeping the
+                weave and texture visible.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-2 rounded-full border border-border/60 bg-muted/40 p-1">
+                {(["natural", "classic"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setColourTab(tab)}
+                    className={cn(
+                      "flex-1 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors",
+                      colourTab === tab
+                        ? "bg-card text-foreground shadow-sm ring-1 ring-border"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {tab === "natural" ? "Natural Dyes" : "Classic Colours"}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-8">
+                {(colourTab === "natural" ? naturalCards : CLASSIC_COLOURS).map((c) => (
+                  <button
+                    key={c.name}
+                    type="button"
+                    title={c.name}
+                    aria-label={`Select ${c.name}`}
+                    onClick={() => pickColour(c.name, colourTab === "natural")}
+                    className={cn(
+                      "aspect-square w-full rounded-lg ring-1 ring-border transition-all hover:scale-105",
+                      colour === c.name && "ring-2 ring-primary ring-offset-2 ring-offset-background",
+                    )}
+                    style={{ background: c.hex }}
+                  />
+                ))}
+              </div>
+
+              <FabricPreview hex={colourHex} label={colour} className="w-full rounded-2xl" />
+
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="rounded-xl border border-border/60 bg-muted/40 px-3 py-2">
+                  <p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Colour HEX</p>
+                  <p className="mt-0.5 font-mono font-semibold uppercase">{colourHex}</p>
+                </div>
+                <div className="rounded-xl border border-border/60 bg-muted/40 px-3 py-2">
+                  <p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Predicted retention</p>
+                  <p className="mt-0.5 font-semibold text-emerald-700">{colourRetention}%</p>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Sustainability score</span>
+                  <span className="font-semibold">{colourRetention}%</span>
+                </div>
+                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-muted">
+                  <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-500" style={{ width: `${colourRetention}%` }} />
+                </div>
+                <p className="mt-1.5 text-[10px] leading-4 text-muted-foreground">{colourSustainability}</p>
+              </div>
+
+              {/* Recommended yarn */}
+              <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
+                <p className="text-xs font-semibold">Recommended yarn</p>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{yarn.name}</p>
+                    <p className="truncate text-[10px] text-muted-foreground">{yarn.material}</p>
+                    <p className="mt-0.5 text-[11px] leading-4 text-muted-foreground">{rationale}</p>
+                  </div>
+                  <p className="font-display shrink-0 text-lg font-semibold text-primary">
+                    {formatINR(yarn.price)}
+                  </p>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <Button size="sm" variant="outline" className="flex-1 gap-1.5 rounded-full" onClick={addYarnToCart}>
+                    <ShoppingBag className="size-3.5" /> Add to Cart
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 gap-1.5 rounded-full"
+                    onClick={() => {
+                      addYarnToCart();
+                      navigate("/checkout");
+                    }}
+                  >
+                    <Zap className="size-3.5" /> Buy Yarn
+                  </Button>
+                </div>
+                <Link
+                  to={`/shop/${yarn.id}`}
+                  className="mt-2 flex items-center gap-1 text-[10px] font-medium text-primary hover:underline"
+                >
+                  <Leaf className="size-3" /> View in Yarn Shop
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card className="shadow-none border-border/70">
             <CardHeader>
               <CardTitle className="text-base">Design brief</CardTitle>

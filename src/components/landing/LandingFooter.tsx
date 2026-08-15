@@ -4,32 +4,36 @@ import { Reveal } from "./shared";
 import { ArrowRight, Instagram, Linkedin, Mail, Sparkles, Youtube } from "lucide-react";
 import { Link } from "react-router";
 
-const COLUMNS = [
+type FooterLink = { label: string; to: string } | { label: string; href: string };
+
+const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Platform",
     links: [
-      { label: "AI Fabric Lab", href: "#fabric-lab" },
-      { label: "Design Studio", href: "#design-studio" },
-      { label: "Natural Dyes", href: "#natural-dyes" },
-      { label: "Collections", href: "#collections" },
+      { label: "AI Fabric Lab", to: "/#fabric-lab" },
+      { label: "Design Studio", to: "/#design-studio" },
+      { label: "Natural Dyes", to: "/natural-dyes" },
+      { label: "Colours", to: "/colors" },
+      { label: "Collections", to: "/collections" },
+      { label: "Yarn Shop", to: "/shop" },
     ],
   },
   {
     title: "Support",
     links: [
-      { label: "Help Center", href: "/auth?returnTo=/assistant" },
+      { label: "Help Center", to: "/auth?returnTo=/assistant" },
       { label: "Contact", href: "mailto:hello@ecoprint.ai" },
-      { label: "FAQs", href: "#faq" },
+      { label: "FAQs", to: "/#faq" },
       { label: "Privacy Policy", href: "#" },
     ],
   },
   {
     title: "Account",
     links: [
-      { label: "My Designs", href: "/auth?returnTo=/designs" },
-      { label: "Orders", href: "/auth?returnTo=/orders" },
-      { label: "Payments", href: "/auth?returnTo=/checkout" },
-      { label: "Profile", href: "/auth?returnTo=/account" },
+      { label: "My Designs", to: "/auth?returnTo=/designs" },
+      { label: "Orders", to: "/orders" },
+      { label: "Checkout", to: "/checkout" },
+      { label: "Profile", to: "/auth?returnTo=/account" },
     ],
   },
 ];
@@ -73,7 +77,7 @@ export function LandingFooter() {
                   variant="outline"
                   className="rounded-full border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
                 >
-                  <a href="#collections">Explore Collections</a>
+                  <Link to="/collections">Explore Collections</Link>
                 </Button>
               </div>
             </div>
@@ -118,9 +122,15 @@ export function LandingFooter() {
                 <ul className="mt-3 space-y-2">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-primary">
-                        {l.label}
-                      </a>
+                      {"to" in l ? (
+                        <Link to={l.to} className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                          {l.label}
+                        </Link>
+                      ) : (
+                        <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-primary">
+                          {l.label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>

@@ -8,16 +8,24 @@
 import { useEffect, useState } from "react";
 
 export interface CartItem {
-  /** Stable id — design title + fabric + pattern. */
+  /** Stable id — design title + fabric + pattern, or yarn id. */
   id: string;
   title: string;
-  fabric: string;
-  pattern: string;
-  dye: string;
-  seed: number;
-  palette: { name: string; hex: string }[];
   price: number;
   quantity: number;
+  /** "design" (AI-generated garment) or "yarn" (shop product). */
+  kind?: "design" | "yarn";
+  // Design fields (kind === "design") -------------------------------------
+  fabric?: string;
+  pattern?: string;
+  dye?: string;
+  seed?: number;
+  palette?: { name: string; hex: string }[];
+  // Yarn fields (kind === "yarn") -----------------------------------------
+  unit?: string;
+  colour?: string;
+  material?: string;
+  image?: string;
 }
 
 const STORAGE_KEY = "ecoprint-cart";
@@ -50,7 +58,7 @@ export function useCart() {
     const current = read();
     const found = current.find((i) => i.id === item.id);
     if (found) found.quantity += 1;
-    else current.push({ ...item, quantity: 1 });
+    else current.push({ ...item, kind: item.kind ?? "design", quantity: 1 });
     write(current);
   };
 

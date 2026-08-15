@@ -25,7 +25,7 @@ export default function Pricing() {
       toast("Sales is a demo — email sales@ecoprint.ai to talk.");
       return;
     }
-    navigate(`/checkout?plan=${planId}`);
+    navigate(`/checkout/plan?plan=${planId}`);
   };
 
   return (

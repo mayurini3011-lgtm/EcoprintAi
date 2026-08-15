@@ -1203,7 +1203,7 @@ export default function Studio() {
                   <Link to="/security">Open Security Center</Link>
                 </Button>
                 <Button variant="ghost" asChild>
-                  <Link to="/orders">My orders</Link>
+                  <Link to="/orders/garments">My orders</Link>
                 </Button>
               </div>
             </CardContent>

@@ -26,13 +26,23 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "Home", href: "#hero" },
-  { label: "AI Fabric Lab", href: "#fabric-lab" },
-  { label: "Natural Dyes", href: "#natural-dyes" },
-  { label: "Design Studio", href: "#design-studio" },
-  { label: "Collections", href: "#collections" },
-  { label: "How It Works", href: "#how-it-works" },
+interface NavLink {
+  label: string;
+  /** Internal route (e.g. /shop) or landing anchor (e.g. /#fabric-lab). */
+  to?: string;
+  /** Same-page anchor only — used on the landing page itself. */
+  href?: string;
+}
+
+const NAV_LINKS: NavLink[] = [
+  { label: "Home", to: "/" },
+  { label: "AI Fabric Lab", to: "/#fabric-lab" },
+  { label: "Natural Dyes", to: "/natural-dyes" },
+  { label: "Colours", to: "/colors" },
+  { label: "Design Studio", to: "/#design-studio" },
+  { label: "Collections", to: "/collections" },
+  { label: "Yarn Shop", to: "/shop" },
+  { label: "How It Works", to: "/#how-it-works" },
 ];
 
 export function LandingHeader() {
@@ -66,15 +76,25 @@ export function LandingHeader() {
 
         {/* Center nav */}
         <nav className="mx-auto hidden items-center gap-1 lg:flex">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-3.5 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((l) =>
+            l.href ? (
+              <a
+                key={l.href}
+                href={l.href}
+                className="rounded-full px-3 py-2 text-[12.5px] font-medium text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link
+                key={l.to}
+                to={l.to ?? "/"}
+                className="rounded-full px-3 py-2 text-[12.5px] font-medium text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
+              >
+                {l.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         {/* Right actions */}
@@ -153,14 +173,14 @@ export function LandingHeader() {
             </Link>
           </Button>
 
-          <a href="#checkout" aria-label={`Cart, ${count} items`} className="relative flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted/70">
+          <Link to="/cart" aria-label={`Cart, ${count} items`} className="relative flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted/70">
             <ShoppingBag className="size-[18px]" />
             {count > 0 && (
               <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground ring-2 ring-background">
                 {count > 9 ? "9+" : count}
               </span>
             )}
-          </a>
+          </Link>
 
           <Button asChild size="sm" className="ml-1 hidden gap-1.5 rounded-full md:inline-flex">
             <Link to="/auth?returnTo=/design-studio">
@@ -192,17 +212,29 @@ export function LandingHeader() {
             className="overflow-hidden border-t border-border/60 bg-background/95 backdrop-blur lg:hidden"
           >
             <div className="space-y-1 px-4 py-3">
-              {NAV_LINKS.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/70"
-                >
-                  {l.label}
-                  <ArrowRight className="size-4 text-muted-foreground" />
-                </a>
-              ))}
+              {NAV_LINKS.map((l) =>
+                l.href ? (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/70"
+                  >
+                    {l.label}
+                    <ArrowRight className="size-4 text-muted-foreground" />
+                  </a>
+                ) : (
+                  <Link
+                    key={l.to}
+                    to={l.to ?? "/"}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/70"
+                  >
+                    {l.label}
+                    <ArrowRight className="size-4 text-muted-foreground" />
+                  </Link>
+                ),
+              )}
               <div className="flex gap-2 pt-2">
                 <Button asChild size="sm" className="flex-1 gap-1.5 rounded-full">
                   <Link to="/auth?returnTo=/design-studio">
