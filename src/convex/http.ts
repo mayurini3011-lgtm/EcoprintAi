@@ -123,6 +123,7 @@ http.route({
       pattern: String(body.pattern ?? "Floral"),
       palette: (body.palette as { name: string; hex: string }[] | undefined) ?? [],
       seed: body.seed ? Number(body.seed) : undefined,
+      provider: body.provider ? String(body.provider) : undefined,
     });
     return new Response(JSON.stringify(result), {
       status: 200,

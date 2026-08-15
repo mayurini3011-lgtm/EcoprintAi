@@ -24,15 +24,34 @@ import {
   PATTERNS,
   type PaletteColor,
 } from "@/convex/constants";
-import { useAction, useMutation } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { Download, Loader2, RefreshCcw, Save, Sparkles, Wand2, Zap } from "lucide-react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 
+interface ProviderOption {
+  id: string;
+  label: string;
+  model: string;
+  description: string;
+  configured: boolean;
+  envVar: string;
+}
+
+const DEMO_PROVIDER: ProviderOption = {
+  id: "demo",
+  label: "Demo (procedural)",
+  model: "procedural SVG",
+  description: "Seeded browser-side renderer — works offline, no keys.",
+  configured: true,
+  envVar: "—",
+};
+
 export default function DesignStudio() {
   const generateDesign = useAction(api.designStudio.generateDesign);
   const saveDesign = useMutation(api.designsData.saveDesign);
+  const providers = useQuery(api.designProviders.listProviders);
 
   // Deep-link support: /design-studio?dye=Indigo&fabric=Cotton&pattern=Floral
   const [searchParams] = useSearchParams();
@@ -49,13 +68,19 @@ export default function DesignStudio() {
     linkPattern && (PATTERNS as readonly string[]).includes(linkPattern) ? linkPattern : "Floral",
   );
   const [paletteName, setPaletteName] = useState("Indigo blue");
+  const [provider, setProvider] = useState("demo");
 
   const [generating, setGenerating] = useState(false);
   const [spec, setSpec] = useState<DesignSpec | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [mode, setMode] = useState<"demo-svg" | "model">("demo-svg");
+  const [usedProvider, setUsedProvider] = useState<string>("demo");
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  const providerOptions: ProviderOption[] = providers ?? [DEMO_PROVIDER];
+  const selectedProvider =
+    providerOptions.find((p) => p.id === provider) ?? DEMO_PROVIDER;
 
   const svgWrapRef = useRef<HTMLDivElement>(null);
 
@@ -72,13 +97,24 @@ export default function DesignStudio() {
         pattern,
         palette,
         seed,
+        provider,
       });
       setSpec({ seed: res.seed, pattern, palette: res.palette });
       setImageUrl(res.imageUrl);
       setMode(res.mode);
+      setUsedProvider(res.provider);
       setTitle(res.title);
       if (res.mode === "demo-svg") {
-        toast("Demo preview generated — no image API connected.");
+        toast(
+          res.provider !== "demo"
+            ? `The ${res.provider} provider is not configured or failed — showing a demo preview instead.`
+            : "Demo preview generated — no image API connected.",
+        );
+      } else {
+        const used = providerOptions.find((p) => p.id === res.provider);
+        toast.success(
+          `Design generated with ${used?.label ?? res.provider}${used?.model ? ` · ${used.model}` : ""}`,
+        );
       }
     } catch {
       setError("AI generation unavailable. Try Demo Mode.");
@@ -131,13 +167,18 @@ export default function DesignStudio() {
             Generate natural-dye textile designs
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Describe a design, pick a fabric, dye, pattern and palette — and let
-            EcoPrint AI compose a preview.
+            Describe a design, pick a fabric, dye, pattern, palette and an image
+            model — and let EcoPrint AI compose a preview.
           </p>
         </div>
         {spec && (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-1 text-[11px] font-medium text-amber-700">
-            {mode === "demo-svg" ? "Demo preview · procedural renderer" : "Model image"}
+            {mode === "demo-svg" ? "Demo preview · procedural renderer" : (
+              <>
+                {providerOptions.find((p) => p.id === usedProvider)?.label ?? usedProvider} ·{" "}
+                {providerOptions.find((p) => p.id === usedProvider)?.model ?? "model image"}
+              </>
+            )}
           </span>
         )}
       </div>
@@ -159,6 +200,38 @@ export default function DesignStudio() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div>
+                <Label className="text-xs">Image model</Label>
+                <Select value={provider} onValueChange={setProvider}>
+                  <SelectTrigger className="mt-1 h-9 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {providerOptions.map((p) => (
+                      <SelectItem
+                        key={p.id}
+                        value={p.id}
+                        disabled={!p.configured && p.id !== "demo"}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="truncate">{p.label} · {p.model}</span>
+                          {!p.configured && (
+                            <span className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground">
+                              add {p.envVar}
+                            </span>
+                          )}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="mt-1.5 text-[10px] leading-4 text-muted-foreground">
+                  {selectedProvider.configured
+                    ? selectedProvider.description
+                    : `Not configured — add ${selectedProvider.envVar} in the Keys tab to enable ${selectedProvider.label}.`}
+                </p>
+              </div>
+
               <div>
                 <Label htmlFor="prompt" className="text-xs">Prompt</Label>
                 <Textarea
@@ -237,9 +310,14 @@ export default function DesignStudio() {
               </Button>
 
               <p className="text-[10px] leading-4 text-muted-foreground">
-                Demo mode renders a procedural preview in your browser. Connect an
-                AI image API (AI_API_KEY + AI_IMAGE_ENDPOINT) to generate real
-                images — no keys are exposed in the frontend.
+                Demo mode renders a procedural preview in your browser — no keys
+                needed. Add an image API key in the Keys tab to unlock live
+                models: <code className="font-mono">OPENAI_API_KEY</code> (OpenAI),{" "}
+                <code className="font-mono">STABILITY_API_KEY</code> (Stability),{" "}
+                <code className="font-mono">TOGETHER_API_KEY</code> (FLUX), or{" "}
+                <code className="font-mono">AI_API_KEY</code> +{" "}
+                <code className="font-mono">AI_IMAGE_ENDPOINT</code> (custom). Keys
+                stay server-side — never exposed in the frontend.
               </p>
             </CardContent>
           </Card>
