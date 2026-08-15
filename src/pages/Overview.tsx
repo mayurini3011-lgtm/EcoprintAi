@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { StatCard } from "@/components/security/StatCard";
 import { PaletteSwatches } from "@/components/garment/PaletteSwatches";
+import { BotanicalImage } from "@/components/brand/BotanicalImage";
+import { motion } from "framer-motion";
 import {
   Area,
   AreaChart,
@@ -76,33 +78,57 @@ export default function Overview() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold tracking-wider text-primary uppercase">
-            EcoPrint AI · Overview
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Your textile intelligence dashboard
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Analyze fabrics, predict retention, generate designs and track
-            everything in one place.
-          </p>
+      {/* Welcome banner */}
+      <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/10 via-card to-amber-200/30 px-5 py-6 sm:px-7">
+        <div
+          aria-hidden
+          className="animate-float-slow pointer-events-none absolute -right-8 -top-8 size-48 rounded-full bg-primary/15 blur-2xl"
+        />
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold tracking-wider text-primary uppercase">
+              EcoPrint AI · Overview
+            </p>
+            <h1 className="font-display mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
+              Your textile intelligence dashboard
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Analyze fabrics, predict retention, generate designs and track
+              everything in one place.
+            </p>
+          </div>
+          <Button asChild className="gap-2 shadow-lg shadow-primary/20">
+            <Link to="/analyze">
+              <FlaskConical className="size-4" /> Analyze a fabric
+            </Link>
+          </Button>
         </div>
-        <Button asChild className="gap-2">
-          <Link to="/analyze">
-            <FlaskConical className="size-4" /> Analyze a fabric
-          </Link>
-        </Button>
+        <BotanicalImage
+          src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=240&q=70"
+          alt="Marigold flowers — natural dye inspiration"
+          emoji="🌼"
+          className="pointer-events-none absolute -right-1 top-0 hidden h-full w-44 rounded-r-2xl opacity-90 sm:block"
+        />
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
-        <StatCard icon={FlaskConical} label="Total Analyses" value={total} tone="default" />
-        <StatCard icon={TrendingUp} label="Avg Retention" value={`${avgRetention}%`} tone="success" />
-        <StatCard icon={Leaf} label="Best Dye" value={bestDye} tone="info" />
-        <StatCard icon={Palette} label="Designs Generated" value={designs?.length ?? 0} tone="warning" />
-        <StatCard icon={Sparkles} label="Sustainability" value={`${avgSustain}/100`} tone="success" />
+        {[
+          { icon: FlaskConical, label: "Total Analyses", value: total, tone: "default" as const },
+          { icon: TrendingUp, label: "Avg Retention", value: `${avgRetention}%`, tone: "success" as const },
+          { icon: Leaf, label: "Best Dye", value: bestDye, tone: "info" as const },
+          { icon: Palette, label: "Designs Generated", value: designs?.length ?? 0, tone: "warning" as const },
+          { icon: Sparkles, label: "Sustainability", value: `${avgSustain}/100`, tone: "success" as const },
+        ].map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08 + i * 0.07, duration: 0.4, ease: "easeOut" }}
+          >
+            <StatCard icon={s.icon} label={s.label} value={s.value} tone={s.tone} />
+          </motion.div>
+        ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
@@ -208,21 +234,28 @@ export default function Overview() {
             text: "Ask about dyes, mordants, wash cycles — or have your latest result explained.",
             to: "/assistant",
           },
-        ].map((a) => (
-          <Link
+        ].map((a, i) => (
+          <motion.div
             key={a.title}
-            to={a.to}
-            className="group rounded-2xl border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: i * 0.08, duration: 0.45, ease: "easeOut" }}
           >
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <a.icon className="size-5" />
-            </span>
-            <p className="mt-3 text-sm font-semibold">{a.title}</p>
-            <p className="mt-1 text-xs leading-5 text-muted-foreground">{a.text}</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary">
-              Open <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-            </span>
-          </Link>
+            <Link
+              to={a.to}
+              className="group flex h-full flex-col rounded-2xl border border-border/70 bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md hover:shadow-primary/10"
+            >
+              <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
+                <a.icon className="size-5" />
+              </span>
+              <p className="mt-3 text-sm font-semibold">{a.title}</p>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">{a.text}</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary">
+                Open <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          </motion.div>
         ))}
       </div>
 

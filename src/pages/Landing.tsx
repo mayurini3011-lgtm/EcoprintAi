@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Logo } from "@/components/brand/Logo";
+import { BotanicalImage } from "@/components/brand/BotanicalImage";
 import { DesignCanvas } from "@/components/design/DesignCanvas";
 import { PLANS } from "@/convex/constants";
 import { motion } from "framer-motion";
@@ -175,6 +176,14 @@ export default function Landing() {
             WebkitMaskImage: "radial-gradient(70% 70% at 50% 0%, black, transparent)",
           }}
         />
+        <div
+          aria-hidden
+          className="animate-float-slow pointer-events-none absolute -left-24 top-24 -z-10 size-72 rounded-full bg-primary/15 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="animate-float pointer-events-none absolute -right-20 top-1/3 -z-10 size-80 rounded-full bg-amber-400/20 blur-3xl"
+        />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
@@ -235,6 +244,30 @@ export default function Landing() {
             transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
             className="relative"
           >
+            {/* Floating botanical imagery */}
+            <div className="animate-float-slow pointer-events-none absolute -right-4 -top-8 z-10 hidden w-36 rotate-3 overflow-hidden rounded-2xl border border-border/60 bg-card p-1.5 shadow-xl shadow-primary/10 sm:block lg:-right-10 lg:w-40">
+              <BotanicalImage
+                src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=360&q=70"
+                alt="Marigold flowers — natural dye source"
+                emoji="🌼"
+                className="aspect-[3/4] w-full rounded-xl"
+              />
+              <p className="px-1 pt-1.5 text-[9px] font-medium tracking-wide text-muted-foreground uppercase">
+                Marigold · source
+              </p>
+            </div>
+            <div className="animate-float pointer-events-none absolute -bottom-10 -left-6 z-10 hidden w-32 -rotate-6 overflow-hidden rounded-2xl border border-border/60 bg-card p-1.5 shadow-xl shadow-primary/10 sm:block lg:-left-12 lg:w-36">
+              <BotanicalImage
+                src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=320&q=70"
+                alt="Lavender field — botanical inspiration"
+                emoji="💜"
+                className="aspect-square w-full rounded-xl"
+              />
+              <p className="px-1 pt-1.5 text-[9px] font-medium tracking-wide text-muted-foreground uppercase">
+                Lavender · inspiration
+              </p>
+            </div>
+
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/70 bg-card shadow-xl shadow-primary/10">
               <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
                 <span className="text-xs font-medium">Indigo Tie Dye · preview</span>
@@ -269,6 +302,50 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
+
+      {/* Dye marquee */}
+      <div className="overflow-hidden border-y border-border/60 bg-card/60 py-3">
+        <div className="animate-marquee flex w-max items-center">
+          {[
+            ["🔵", "Indigo"],
+            ["🌼", "Turmeric"],
+            ["🌺", "Hibiscus"],
+            ["🌹", "Madder"],
+            ["🍎", "Pomegranate"],
+            ["🌻", "Marigold"],
+            ["🌰", "Walnut"],
+            ["🍃", "Neem"],
+            ["🍂", "Henna"],
+            ["🧅", "Onion"],
+            ["🍠", "Beetroot"],
+            ["🍵", "Tea"],
+          ]
+            .concat([
+              ["🔵", "Indigo"],
+              ["🌼", "Turmeric"],
+              ["🌺", "Hibiscus"],
+              ["🌹", "Madder"],
+              ["🍎", "Pomegranate"],
+              ["🌻", "Marigold"],
+              ["🌰", "Walnut"],
+              ["🍃", "Neem"],
+              ["🍂", "Henna"],
+              ["🧅", "Onion"],
+              ["🍠", "Beetroot"],
+              ["🍵", "Tea"],
+            ])
+            .map(([emoji, name], i) => (
+              <span
+                key={i}
+                className="flex items-center gap-2 pr-10 text-xs font-semibold tracking-wide text-muted-foreground/80 uppercase"
+              >
+                <span className="text-base">{emoji}</span>
+                {name}
+                <span className="text-primary/30">•</span>
+              </span>
+            ))}
+        </div>
+      </div>
 
       {/* How it works */}
       <section id="how" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
@@ -367,6 +444,129 @@ export default function Landing() {
               </Link>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Botanical → textile gallery */}
+      <section id="gallery" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold tracking-wider text-primary uppercase">
+              From botanical to textile
+            </p>
+            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Nature in, art out
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Every design starts as a plant. Pick a source, choose a dye and
+              let EcoPrint AI compose the fabric — then open it in the design
+              studio to regenerate your own variation.
+            </p>
+          </div>
+          <Button asChild variant="outline">
+            <Link to="/auth?returnTo=/design-studio">
+              Open Design Studio <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Real botanical photography */}
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Marigold&pattern=Floral"
+            title="Marigold harvest"
+            tag="Botanical source"
+          >
+            <BotanicalImage
+              src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=600&q=70"
+              alt="Marigold flowers used for natural dye"
+              emoji="🌼"
+              className="h-full w-full"
+            />
+          </GalleryCard>
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Indigo&pattern=Ikat-inspired"
+            title="Indigo fields"
+            tag="Farm to vat"
+          >
+            <BotanicalImage
+              src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=70"
+              alt="Lavender field — indigo-inspired botanical landscape"
+              emoji="💜"
+              className="h-full w-full"
+            />
+          </GalleryCard>
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Hibiscus&pattern=Block Print"
+            title="Fresh petals"
+            tag="Cold extraction"
+          >
+            <BotanicalImage
+              src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=600&q=70"
+              alt="Fresh flower petals — hibiscus dye source"
+              emoji="🌺"
+              className="h-full w-full"
+            />
+          </GalleryCard>
+
+          {/* AI-generated textile designs */}
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Indigo&pattern=Tie Dye"
+            title="Indigo Tie Dye"
+            tag="AI design · Cotton"
+          >
+            <DesignCanvas
+              spec={{
+                seed: 12041,
+                pattern: "Tie Dye",
+                palette: [
+                  { name: "Deep Indigo", hex: "#2b4a9b" },
+                  { name: "Midnight", hex: "#1f3a7a" },
+                  { name: "Stone", hex: "#c8c2b4" },
+                  { name: "Cream", hex: "#f6f1e7" },
+                ],
+              }}
+              className="h-full w-full"
+            />
+          </GalleryCard>
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Turmeric&pattern=Floral"
+            title="Turmeric Floral"
+            tag="AI design · Silk"
+          >
+            <DesignCanvas
+              spec={{
+                seed: 7714,
+                pattern: "Floral",
+                palette: [
+                  { name: "Turmeric", hex: "#e3a32a" },
+                  { name: "Marigold", hex: "#e8a33d" },
+                  { name: "Saffron", hex: "#d9822b" },
+                  { name: "Cream", hex: "#f6f1e7" },
+                ],
+              }}
+              className="h-full w-full"
+            />
+          </GalleryCard>
+          <GalleryCard
+            href="/auth?returnTo=/design-studio?dye=Walnut&pattern=Block Print"
+            title="Walnut Block Print"
+            tag="AI design · Linen"
+          >
+            <DesignCanvas
+              spec={{
+                seed: 9033,
+                pattern: "Block Print",
+                palette: [
+                  { name: "Walnut", hex: "#5a4632" },
+                  { name: "Chestnut", hex: "#7a5c40" },
+                  { name: "Cocoa", hex: "#4a3826" },
+                  { name: "Sand", hex: "#e5dcc8" },
+                ],
+              }}
+              className="h-full w-full"
+            />
+          </GalleryCard>
         </div>
       </section>
 
@@ -563,5 +763,40 @@ function ScoreRow({ label, value, tone }: { label: string; value: string; tone?:
       <span className="text-muted-foreground">{label}</span>
       <span className={cn("font-medium", tone)}>{value}</span>
     </div>
+  );
+}
+
+function GalleryCard({
+  href,
+  title,
+  tag,
+  children,
+}: {
+  href: string;
+  title: string;
+  tag: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      to={href}
+      className="group relative block aspect-[4/5] overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
+    >
+      <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.06]">
+        {children}
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
+        <div>
+          <p className="text-sm font-semibold text-white">{title}</p>
+          <p className="text-[10px] font-medium tracking-wide text-white/75 uppercase">
+            {tag}
+          </p>
+        </div>
+        <span className="flex size-8 shrink-0 translate-y-1 items-center justify-center rounded-full bg-white/90 text-foreground opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ArrowRight className="size-4" />
+        </span>
+      </div>
+    </Link>
   );
 }

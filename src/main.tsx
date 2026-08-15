@@ -5,6 +5,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
@@ -129,6 +130,23 @@ function RouteSyncer() {
   return null;
 }
 
+/** Fade/slide each route in and out for a polished page-change feel. */
+function AnimatedRoutes({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <Routes location={location}>{children}</Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -140,7 +158,7 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <RouteSyncer />
           <Suspense fallback={<RouteLoading />}>
-            <Routes>
+            <AnimatedRoutes>
               <Route path="/" element={<Landing />} />
               <Route path="/verify/:garmentId" element={<Verify />} />
               <Route
@@ -358,7 +376,7 @@ createRoot(document.getElementById("root")!).render(
                 }
               />
               <Route path="*" element={<NotFound />} />
-            </Routes>
+            </AnimatedRoutes>
           </Suspense>
         </BrowserRouter>
         <Toaster />

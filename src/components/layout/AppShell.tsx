@@ -4,6 +4,7 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,7 +93,8 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
 
 const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
-function NavItems({ onNavigate }: { onNavigate?: () => void }) {
+function NavItems({ onNavigate, navId }: { onNavigate?: () => void; navId?: string }) {
+  const pillId = `${navId ?? "nav"}-pill`;
   return (
     <nav className="flex flex-col gap-4">
       {NAV_GROUPS.map((group) => (
@@ -108,15 +110,26 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
                 onClick={onNavigate}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+                    "relative flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
                     isActive
-                      ? "bg-primary/8 text-primary"
+                      ? "text-primary"
                       : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
                   )
                 }
               >
-                <item.icon className="size-4" />
-                {item.label}
+                {({ isActive }) => (
+                  <>
+                    {isActive && (
+                      <motion.span
+                        layoutId={pillId}
+                        className="absolute inset-0 -z-10 rounded-lg bg-primary/10 ring-1 ring-primary/15"
+                        transition={{ type: "spring", stiffness: 420, damping: 36 }}
+                      />
+                    )}
+                    <item.icon className="size-4" />
+                    {item.label}
+                  </>
+                )}
               </NavLink>
             ))}
           </div>
@@ -228,7 +241,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </NavLink>
         </div>
         <div className="flex-1 overflow-y-auto px-3 py-4">
-          <NavItems />
+          <NavItems navId="desktop" />
         </div>
         <div className="border-t border-border/60 p-3">
           <AIStatusChip />
@@ -251,7 +264,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="mb-4 flex items-center px-2 pt-1">
               <Logo />
             </div>
-            <NavItems onNavigate={() => setSheetOpen(false)} />
+            <NavItems onNavigate={() => setSheetOpen(false)} navId="mobile" />
             <div className="mt-4 border-t pt-3">
               <AIStatusChip />
               <p className="mb-1.5 px-1 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
