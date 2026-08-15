@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "preview": "vite preview"
-  },
+  "dev": "vite",
+  "build": "npx convex codegen && vite build",
+  "lint": "eslint .",
+  "format": "prettier --write .",
+  "preview": "vite preview"
+},
   "dependencies": {
     "@convex-dev/auth": "^0.0.90",
     "@hookform/resolvers": "^5.2.2",
