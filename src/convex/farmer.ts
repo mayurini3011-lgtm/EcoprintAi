@@ -60,7 +60,7 @@ export const submitBatch = mutation({
       args.quantityKg > 400 ||
       args.quantityKg < 1;
 
-    const id = await ctx.db.insert("rawMaterialBatches", {
+    await ctx.db.insert("rawMaterialBatches", {
       code,
       farmerCode: farmer.code,
       farmerName: farmer.farmName,

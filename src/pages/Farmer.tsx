@@ -1,5 +1,4 @@
 import { api } from "@/convex/_generated/api";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,

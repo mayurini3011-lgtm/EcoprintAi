@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { formatDateTime, shortHash } from "@/lib/format";
+import { formatDateTime } from "@/lib/format";
 
 /** The seeded hero garment used for the tamper demonstration. */
 const DEMO_GARMENT = "NF-2026-000124";

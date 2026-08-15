@@ -10,7 +10,6 @@
  * the target of the Security Center tamper demonstration. A fresh order
  * placed during the demo receives NF-2026-000125.
  */
-import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { mutation } from "./_generated/server";
 import { buildChainSpecs } from "./chain_specs";

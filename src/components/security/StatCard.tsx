@@ -25,7 +25,7 @@ export function StatCard({
     info: "bg-sky-500/12 text-sky-400",
   };
   return (
-    <Card className="shadow-none border-border/70">
+    <Card className={cn("shadow-none border-border/70", className)}>
       <CardContent className="flex items-start gap-3 p-4">
         <span
           className={cn(

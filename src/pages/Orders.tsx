@@ -1,12 +1,6 @@
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { PaletteSwatches, StatusPill } from "@/components/garment/PaletteSwatches";
 import { GarmentPreview } from "@/components/garment/GarmentPreview";
 import { QrCode } from "@/components/security/QrCode";

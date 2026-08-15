@@ -7,7 +7,6 @@
  * in production this switcher would be replaced by real role assignment.
  */
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { v } from "convex/values";
 import {
   MutationCtx,
   QueryCtx,

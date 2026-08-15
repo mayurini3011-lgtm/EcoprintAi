@@ -33,7 +33,7 @@ import {
   type PaletteColor,
   type PlantInfo,
 } from "@/lib/ai";
-import { formatINR, formatDate } from "@/lib/format";
+import { formatINR } from "@/lib/format";
 import {
   BORDER_PATTERNS,
   GARMENT_TYPES,
@@ -48,9 +48,6 @@ import {
   CalendarClock,
   Check,
   CheckCircle2,
-  Droplets,
-  ImagePlus,
-  Leaf,
   Loader2,
   Lock,
   QrCode as QrCodeIcon,
@@ -95,6 +92,11 @@ const DELIVERY_WINDOWS = [
   "Afternoon · 12pm–4pm",
   "Evening · 4pm–8pm",
 ] as const;
+
+// Earliest bookable delivery date (3 days out, computed once at load).
+const MIN_DELIVERY_DATE = new Date(Date.now() + 3 * 86400000)
+  .toISOString()
+  .slice(0, 10);
 
 const PAYMENT_METHODS = [
   { value: "upi", label: "UPI", hint: "Instant · demo" },
@@ -144,7 +146,6 @@ export default function Studio() {
   const [neck, setNeck] = useState("Round Neck");
   const [border, setBorder] = useState("Temple Border");
   const [motif, setMotif] = useState("hibiscus bloom");
-  const [fabricCode, setFabricCode] = useState<string>("");
   const [dye, setDye] = useState<Dye | null>(null);
   const [fabric, setFabric] = useState<Fabric | null>(null);
 
@@ -213,7 +214,6 @@ export default function Studio() {
     setNeck(design.neckStyle);
     setBorder(design.borderPattern);
     setMotif(design.motif);
-    setFabricCode("");
     setFabric(null);
     setDye(null);
   };
@@ -792,10 +792,7 @@ export default function Studio() {
                 <button
                   key={f.code}
                   type="button"
-                  onClick={() => {
-                    setFabric(f);
-                    setFabricCode(f.code);
-                  }}
+                  onClick={() => setFabric(f)}
                   className={cn(
                     "rounded-xl border bg-card p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md",
                     fabric?.code === f.code
@@ -985,9 +982,7 @@ export default function Studio() {
                 <Input
                   id="delivery-date"
                   type="date"
-                  min={new Date(Date.now() + 3 * 86400000)
-                    .toISOString()
-                    .slice(0, 10)}
+                  min={MIN_DELIVERY_DATE}
                   className="mt-1 h-9 text-sm"
                   value={deliveryDate}
                   onChange={(e) => setDeliveryDate(e.target.value)}

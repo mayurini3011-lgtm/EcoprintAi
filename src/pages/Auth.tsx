@@ -16,7 +16,7 @@ import {
 
 import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/brand/Logo";
-import { ArrowRight, Loader2, Mail, UserX, Zap } from "lucide-react";
+import { ArrowRight, Loader2, Mail, Zap } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 
