@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
   "dev": "vite",
-  "build": "npx convex codegen && vite build",
+  "build": "vite build --emptyOutDir",
   "lint": "eslint .",
   "format": "prettier --write .",
   "preview": "vite preview"
-},
+}
   "dependencies": {
     "@convex-dev/auth": "^0.0.90",
     "@hookform/resolvers": "^5.2.2",
