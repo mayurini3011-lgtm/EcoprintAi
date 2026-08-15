@@ -5,21 +5,28 @@
  * http.ts). Receives the user's message plus optional analysis context and
  * returns a reply.
  *
- * Two modes:
- *  1. LIVE  — when AI_API_KEY (and optionally AI_API_BASE_URL / AI_MODEL)
- *             are configured, calls an OpenAI-compatible chat-completions
- *             endpoint. Keys are read from process.env only — never shipped
- *             to the browser.
- *  2. DEMO  — otherwise a deterministic, rule-based responder that can
- *             explain the user's latest EcoPrint analysis (context-aware).
+ * Modes, in priority order:
+ *  1. LIVE (user provider) — when AI_API_KEY (and optionally
+ *     AI_API_BASE_URL / AI_MODEL) are configured, calls an OpenAI-compatible
+ *     chat-completions endpoint.
+ *  2. LIVE (platform gateway) — when VLY_INTEGRATION_KEY is present
+ *     (auto-injected on Freebuff), routes through the platform AI gateway
+ *     with zero extra configuration.
+ *  3. DEMO  — otherwise a deterministic, rule-based responder that can
+ *     explain the user's latest EcoPrint analysis (context-aware).
  *
+ * All keys are read from process.env only — never shipped to the browser.
  * The reply always carries `mode` so the UI can show "Demo Mode" honestly.
  */
 "use node";
 
 import { v } from "convex/values";
 import { action } from "./_generated/server";
+import { vly } from "../lib/vly-integrations";
 import { DYE_KNOWLEDGE } from "./constants";
+
+const SYSTEM_PROMPT =
+  "You are EcoPrint AI Assistant, a friendly expert on natural dyes, fabric care, colour retention and sustainable textiles. Be concise, practical and honest about uncertainty. If the user shares analysis context, explain it simply.";
 
 export const chat = action({
   args: {
@@ -39,6 +46,11 @@ export const chat = action({
     ),
   },
   handler: async (_ctx, { message, analysisContext }): Promise<{ reply: string; mode: "live" | "demo" }> => {
+    const userPrompt = analysisContext
+      ? `[My latest fabric analysis: ${JSON.stringify(analysisContext)}]\n\n${message}`
+      : message;
+
+    // 1) Live: user's own OpenAI-compatible provider (AI_API_KEY).
     const apiKey = process.env.AI_API_KEY;
     if (apiKey) {
       try {
@@ -53,17 +65,8 @@ export const chat = action({
           body: JSON.stringify({
             model,
             messages: [
-              {
-                role: "system",
-                content:
-                  "You are EcoPrint AI Assistant, a friendly expert on natural dyes, fabric care, colour retention and sustainable textiles. Be concise, practical and honest about uncertainty. If the user shares analysis context, explain it simply.",
-              },
-              {
-                role: "user",
-                content: analysisContext
-                  ? `[My latest fabric analysis: ${JSON.stringify(analysisContext)}]\n\n${message}`
-                  : message,
-              },
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: userPrompt },
             ],
             temperature: 0.5,
             max_tokens: 400,
@@ -76,15 +79,42 @@ export const chat = action({
           const reply = data.choices?.[0]?.message?.content?.trim();
           if (reply) return { reply, mode: "live" };
         }
-        // fall through to demo if the provider call failed or returned empty
+        // fall through to the platform gateway / demo on failure or empty reply
       } catch {
         // fall through
       }
     }
 
+    // 2) Live: platform AI gateway (VLY_INTEGRATION_KEY is auto-injected).
+    const vlyReply = await liveVlyReply(userPrompt);
+    if (vlyReply) return { reply: vlyReply, mode: "live" };
+
+    // 3) Demo: deterministic, context-aware responder.
     return { reply: demoReply(message, analysisContext), mode: "demo" };
   },
 });
+
+/** Route a prompt through the platform AI gateway, or return null to fall back. */
+async function liveVlyReply(prompt: string): Promise<string | null> {
+  if (!process.env.VLY_INTEGRATION_KEY) return null;
+  try {
+    const res = await vly.ai.completion({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.5,
+      maxTokens: 400,
+    });
+    const reply = res.success
+      ? res.data?.choices?.[0]?.message?.content?.trim()
+      : undefined;
+    return reply || null;
+  } catch {
+    return null;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Demo responder (rule-based, context-aware)
