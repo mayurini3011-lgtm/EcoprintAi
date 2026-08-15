@@ -1,8 +1,8 @@
-# NaturalFlow — AI-Powered Secure Natural Fashion
+# AI Eco Threads — EcoPrint AI
 
 > **From plant to personalized fashion — designed by AI, protected by cybersecurity.**
 
-A hackathon MVP that connects **Farmers → Natural Dye Manufacturers → Fabric → Customers → AI Design → Tailors**, where every finished garment carries a cryptographically sealed digital identity that anyone can verify by scanning a QR code.
+AI Eco Threads runs **EcoPrint AI**, a hackathon MVP that connects **Farmers → Natural Dye Manufacturers → Fabric → Customers → AI Design → Tailors**, where every finished garment carries a cryptographically sealed digital identity that anyone can verify by scanning a QR code.
 
 ---
 
@@ -12,13 +12,14 @@ Counterfeit sustainability claims and opaque supply chains make it impossible fo
 
 ## The Solution
 
-An AI-powered fashion customization platform with a **cryptographically verifiable supply chain**:
+An AI-powered fashion platform with a **cryptographically verifiable supply chain**:
 
-- Upload a flower or leaf → botanical AI identifies it and designs a garment from its colours and motifs
-- Choose a natural dye batch and sustainable fabric, both traced to their farmer source
-- A tailor stitches the approved design
+- Upload a flower or leaf → **EcoPrint AI** identifies the botanical, extracts its pigments, and generates bespoke garment designs
+- Browse and search the **dye catalogue** and **tailor network**, open full detail pages for any batch or profile
+- Book a **delivery slot**, choose a payment method, and leave a note for your tailor at checkout
 - The finished garment receives a **tamper-evident identity** (`NF-2026-000125`) built from a **SHA-256 hash chain** — change any historical record and the verification breaks, provably
 - An **AI risk scanner** flags suspicious farmer/manufacturer documentation (duplicate certs, mismatched quantities, impossible dates, manipulated metadata)
+- **Role-based dashboards** for customers, farmers, manufacturers and admins
 
 > **Blockchain is NOT the core technology.** The innovation is *cryptographically verifiable supply-chain integrity + AI-powered risk detection*. Blockchain is mentioned only as a possible future extension.
 
@@ -42,13 +43,13 @@ No `.env` variables are required for the MVP. The template's Convex URL (`VITE_C
 
 ## 🎬 The 3-minute demo (the main flow)
 
-1. **Design Studio** → upload a flower (or pick from the botanical gallery).
-   The AI shows an identification card — species, confidence, palette, symbolism.
+1. **EcoPrint Studio** → upload a flower (or pick from the botanical gallery).
+   EcoPrint AI shows an identification card — species, confidence, palette, symbolism.
 2. **AI Concepts** → four generated design cards appear.
 3. Pick one → **Customize** (garment type, colourway, pattern density, sleeve, neck, border, motif) with a live preview.
 4. Choose a **natural dye** batch and a **fabric**.
-5. Enter **measurements** → pick a **tailor**.
-6. **Review & place order** → the system mints garment ID **`NF-2026-000125`**.
+5. Enter **measurements** → pick a **tailor** and **book your delivery slot**.
+6. **Checkout** → choose a payment method, leave a note for the tailor, and **Pay & place order** → the system mints garment ID **`NF-2026-000125`**.
 7. Watch the **secure supply-chain timeline** build (7 hash-chained events) and scan the **QR code**.
 8. Open **`/verify/NF-2026-000124`** (or the new garment) → 🟢 AUTHENTIC / VERIFIED → "Verify Supply Chain Integrity".
 9. Open the **Security Center** → **Simulate Tampering**.
@@ -57,15 +58,15 @@ No `.env` variables are required for the MVP. The template's Convex URL (`VITE_C
 
 ## 🔑 Demo access
 
-Use **"Continue as Guest — instant demo access"** on the auth page (or any email + OTP code). Then use the **demo role switcher** in the sidebar to tour every portal:
+Use **"Continue as guest — instant demo access"** on the auth page (or any email + OTP code). Then use the **demo role switcher** in the sidebar to tour every portal:
 
 | Role | What you see |
 | --- | --- |
-| Customer | Design Studio, Dyes, Tailors, My Orders |
+| Customer | EcoPrint Studio, Dye Catalogue, Tailor Network, My Orders |
 | Farmer | Batch submission + AI risk scan (Green Valley Farm) |
 | Manufacturer | Raw batch → dye batch processing (Aravalli Naturals) |
 | Admin | Security Center tamper demo + Admin analytics |
-| Tailor | Marketplace cards (demo view) |
+| Tailor | Marketplace profiles (demo view) |
 
 ---
 
@@ -75,14 +76,16 @@ Use **"Continue as Guest — instant demo access"** on the auth page (or any ema
 | --- | --- |
 | `/` | Landing |
 | `/auth` | Sign in / guest access |
-| `/dashboard` | **Design Studio** — the customer flow |
-| `/dyes` | Natural dye catalogue |
-| `/tailors` | Tailor marketplace |
-| `/orders` | Orders + garment traceability |
+| `/dashboard` | **EcoPrint Studio** — the customer flow |
+| `/dyes` | Dye catalogue (searchable) |
+| `/dyes/:code` | Dye batch detail + provenance lineage |
+| `/tailors` | Tailor network (searchable) |
+| `/tailors/:code` | Tailor profile detail |
+| `/orders` | Orders + checkout details + garment traceability |
 | `/farmer` | Farmer portal |
 | `/manufacturer` | Manufacturer portal |
 | `/security` | **Security Center** (tamper demo) |
-| `/admin` | Admin dashboard + charts |
+| `/admin` | Admin console + charts |
 | `/verify/:garmentId` | Public QR verification (no auth) |
 
 ---
@@ -121,7 +124,7 @@ Everything lives in `src/convex/security.ts` with inline comments explaining *wh
 
 ## 🗄️ Data model (Convex)
 
-`users`, `farmers`, `manufacturers`, `rawMaterialBatches`, `dyes`, `fabrics`, `tailors`, `designs`, `orders`, `garments`, `supplyChainEvents` (hash chain), `securityAlerts`, `auditLogs`, `aiAnalyses`.
+`users`, `farmers`, `manufacturers`, `rawMaterialBatches`, `dyes`, `fabrics`, `tailors`, `designs`, `orders` (incl. delivery slot, payment method and tailor notes), `garments`, `supplyChainEvents` (hash chain), `securityAlerts`, `auditLogs`, `aiAnalyses`.
 
 The schema is in `src/convex/schema.ts`; the seeder is `src/convex/seed.ts` (idempotent, with a reset mutation exposed in the Security Center).
 
@@ -130,6 +133,7 @@ The schema is in `src/convex/schema.ts`; the seeder is `src/convex/seed.ts` (ide
 ## 🧱 Architecture notes
 
 - **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS v4 + shadcn/ui + Framer Motion + recharts.
+- **Theme:** dark by default — near-black green-tinted canvas, eco-emerald primary, cyan accent, Space Grotesk display type, monospace batch/hash styling.
 - **Backend/DB:** Convex (the template's managed backend + database) — replaces Express/PostgreSQL while keeping the same mental model: typed functions, validated args, reactive queries.
 - **QR:** `qrcode` (renders verification URLs as data-URL images).
 - **Seed data:** fictional but realistic (Green Valley Farm, Aravalli Naturals, Ananya Tailors, …).
@@ -171,6 +175,6 @@ src/
 │   ├── garment/            # SVG previews, palette, timeline, hash table
 │   ├── security/           # QR code, stat cards
 │   └── layout/             # AppShell, demo role switcher
-└── pages/                  # Landing, Studio, Dyes, Tailors, Orders,
-                            # Farmer, Manufacturer, Security, Admin, Verify
+└── pages/                  # Landing, Studio, Dyes (+detail), Tailors (+detail),
+                            # Orders, Farmer, Manufacturer, Security, Admin, Verify
 ```

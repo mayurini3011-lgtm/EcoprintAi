@@ -196,6 +196,12 @@ const schema = defineSchema(
       status: v.string(), // order status step id
       createdAt: v.string(),
       garmentId: v.optional(v.string()),
+
+      // Checkout extras (optional — seeded demo orders omit them)
+      deliveryDate: v.optional(v.string()), // booked delivery slot date
+      deliveryWindow: v.optional(v.string()), // e.g. "Morning · 9am–12pm"
+      paymentMethod: v.optional(v.string()), // mock payment: upi | card | cod
+      notes: v.optional(v.string()), // comment for the tailor
     })
       .index("by_user", ["userId"])
       .index("by_code", ["orderCode"]),

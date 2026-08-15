@@ -29,28 +29,28 @@ const HIBISCUS_PALETTE = [
 const STEPS = [
   {
     icon: "🌸",
-    title: "Upload a flower",
-    text: "A hibiscus, a marigold, a neem leaf — any botanical inspiration.",
+    title: "Upload a botanical",
+    text: "A hibiscus, a marigold, a neem leaf — any flower or leaf becomes your inspiration.",
   },
   {
     icon: "🤖",
-    title: "AI designs it",
-    text: "Botanical vision extracts pigments and composes garment concepts.",
+    title: "EcoPrint AI designs",
+    text: "Botanical vision extracts the pigments and composes garment concepts in seconds.",
   },
   {
     icon: "🧪",
-    title: "Natural dye & fabric",
-    text: "Pick a traced dye batch and a sustainable fabric from verified makers.",
+    title: "Trace dye & fabric",
+    text: "Pick a verified dye batch and a sustainable fabric with full provenance.",
   },
   {
     icon: "✂️",
-    title: "Your tailor stitches",
-    text: "Choose a vetted tailor; they receive your approved design.",
+    title: "Tailor stitches",
+    text: "Your approved design goes to a vetted tailor, scheduled to your delivery slot.",
   },
   {
     icon: "👗",
-    title: "Secure garment ID",
-    text: "NF-2026-000125 — a SHA-256 sealed identity anyone can verify.",
+    title: "Verified garment ID",
+    text: "NF-2026-000125 — a SHA-256 sealed identity anyone can scan and verify.",
   },
 ];
 
@@ -59,7 +59,7 @@ const JOURNEY = [
   { icon: "🌿", label: "Raw Material", actor: "Quality Lab", batch: "250 kg indigo leaves" },
   { icon: "🧪", label: "Dye Maker", actor: "Aravalli Naturals", batch: "DYE-IND-2026-001" },
   { icon: "🧵", label: "Fabric", actor: "Maheshwar Co-op", batch: "FAB-ORG-001" },
-  { icon: "🤖", label: "AI Design", actor: "NaturalFlow AI", batch: "DSG-2026-010" },
+  { icon: "🤖", label: "EcoPrint AI", actor: "Design pipeline", batch: "DSG-2026-010" },
   { icon: "✂️", label: "Tailor", actor: "Ananya Tailors", batch: "TAI-001" },
   { icon: "👗", label: "Garment", actor: "Quality Check", batch: "NF-2026-000124" },
 ];
@@ -113,11 +113,20 @@ const fadeUp = {
   transition: { duration: 0.55, ease: "easeOut" as const },
 };
 
+/** Fine technical grid overlay used behind the hero. */
+const gridStyle = {
+  backgroundImage:
+    "linear-gradient(to right, oklch(1 0 0 / 0.04) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0 / 0.04) 1px, transparent 1px)",
+  backgroundSize: "44px 44px",
+  maskImage: "radial-gradient(70% 70% at 50% 0%, black, transparent)",
+  WebkitMaskImage: "radial-gradient(70% 70% at 50% 0%, black, transparent)",
+} as const;
+
 export default function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link to="/" className="flex items-center">
             <Logo />
@@ -130,7 +139,7 @@ export default function Landing() {
               Supply chain
             </a>
             <a href="#designs" className="transition-colors hover:text-foreground">
-              AI designs
+              EcoPrint AI
             </a>
             <a href="#security" className="transition-colors hover:text-foreground">
               Security
@@ -142,7 +151,7 @@ export default function Landing() {
             </Button>
             <Button asChild size="sm">
               <Link to="/auth?returnTo=/dashboard">
-                Open Studio <ArrowRight className="ml-1.5 size-3.5" />
+                Open the studio <ArrowRight className="ml-1.5 size-3.5" />
               </Link>
             </Button>
           </div>
@@ -153,8 +162,9 @@ export default function Landing() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,oklch(0.96_0.02_95),transparent)]"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,oklch(0.3_0.06_150),transparent)]"
         />
+        <div aria-hidden className="absolute inset-0 -z-10" style={gridStyle} />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:pb-28 lg:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
@@ -163,19 +173,20 @@ export default function Landing() {
           >
             <Badge
               variant="outline"
-              className="mb-5 gap-2 rounded-full border-primary/25 bg-primary/5 py-1.5 text-[11px] font-medium tracking-wide text-primary uppercase"
+              className="mb-5 gap-2 rounded-full border-primary/30 bg-primary/10 py-1.5 text-[11px] font-medium tracking-wide text-primary uppercase"
             >
               <Sparkles className="size-3.5" />
-              AI × Cybersecurity × Natural Dye
+              EcoPrint AI · Secure Natural Fashion
             </Badge>
-            <h1 className="font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]">
+            <h1 className="font-display text-4xl font-semibold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.4rem]">
               From plant to{" "}
               <span className="text-primary">personalized fashion</span>.
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Designed by AI, protected by cybersecurity. Upload a flower, get
-              a bespoke garment — and prove its provenance anywhere with a
-              cryptographically sealed identity.
+              EcoPrint AI turns an uploaded flower or leaf into a bespoke
+              garment — extracting its pigments, composing a one-of-a-kind
+              design, and sealing the entire journey in a SHA-256 supply-chain
+              record anyone can verify.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="gap-2">
@@ -186,39 +197,39 @@ export default function Landing() {
               <Button asChild variant="outline" size="lg">
                 <Link to="/auth?returnTo=/security">
                   <ShieldCheck className="mr-2 size-4" />
-                  See the tamper demo
+                  Inspect the chain
                 </Link>
               </Button>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <CheckCircle2 className="size-3.5 text-emerald-400" />
                 SHA-256 verified chain
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <CheckCircle2 className="size-3.5 text-emerald-400" />
                 Zero synthetic dyes
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <CheckCircle2 className="size-3.5 text-emerald-400" />
                 No customer data exposed
               </span>
             </div>
           </motion.div>
 
-          {/* Hero visual — live mini design card */}
+          {/* Hero visual — live EcoPrint render card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
             className="relative"
           >
-            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/70 bg-card shadow-xl shadow-black/5">
+            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/70 bg-card shadow-xl shadow-black/40">
               <div className="flex items-center justify-between border-b border-border/60 px-4 py-2.5">
-                <span className="text-xs font-medium">Hibiscus · live design</span>
+                <span className="text-xs font-medium">Hibiscus · live render</span>
                 <Badge
                   variant="outline"
-                  className="gap-1 border-emerald-200 bg-emerald-50 text-[10px] text-emerald-700"
+                  className="gap-1 border-emerald-400/30 bg-emerald-500/10 text-[10px] text-emerald-300"
                 >
                   <Fingerprint className="size-2.5" /> VERIFIED
                 </Badge>
@@ -230,7 +241,7 @@ export default function Landing() {
                   motif="hibiscus bloom"
                   className="w-full"
                 />
-                <div className="absolute left-3 top-3 flex size-10 items-center justify-center rounded-full bg-white/90 text-xl shadow-sm">
+                <div className="absolute left-3 top-3 flex size-10 items-center justify-center rounded-full bg-black/70 text-xl shadow-sm backdrop-blur">
                   🌺
                 </div>
               </div>
@@ -250,16 +261,16 @@ export default function Landing() {
               </div>
             </div>
             {/* floating chips */}
-            <div className="absolute -left-3 top-16 hidden rounded-xl border border-border/60 bg-background px-3 py-2 shadow-md sm:block">
+            <div className="absolute -left-3 top-16 hidden rounded-xl border border-border/60 bg-background/95 px-3 py-2 shadow-lg backdrop-blur sm:block">
               <p className="text-[9px] tracking-wide text-muted-foreground uppercase">
                 AI identified
               </p>
-              <p className="text-xs font-semibold">
+              <p className="font-mono text-xs font-semibold">
                 Hibiscus rosa-sinensis · 96%
               </p>
             </div>
-            <div className="absolute -right-3 bottom-24 hidden rounded-xl border border-border/60 bg-background px-3 py-2 shadow-md sm:block">
-              <p className="flex items-center gap-1 text-[10px] font-medium">
+            <div className="absolute -right-3 bottom-24 hidden rounded-xl border border-border/60 bg-background/95 px-3 py-2 shadow-lg backdrop-blur sm:block">
+              <p className="flex items-center gap-1 font-mono text-[10px] font-medium">
                 <Lock className="size-3 text-primary" /> SHA-256 sealed
               </p>
             </div>
@@ -268,16 +279,16 @@ export default function Landing() {
       </section>
 
       {/* Stats strip */}
-      <section className="border-y border-border/60 bg-muted/30">
+      <section className="border-y border-border/60 bg-muted/40">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 md:grid-cols-4">
           {[
-            { value: "10", label: "Natural dye batches traced" },
+            { value: "10", label: "Dye batches traced" },
             { value: "128", label: "Supply-chain records verified" },
             { value: "7", label: "Sealed events per garment" },
             { value: "0", label: "Synthetic inputs" },
           ].map((s) => (
             <div key={s.label} className="text-center">
-              <p className="font-display text-3xl font-medium text-primary">
+              <p className="font-display text-3xl font-semibold text-primary">
                 {s.value}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
@@ -292,7 +303,7 @@ export default function Landing() {
           <p className="text-xs font-semibold tracking-wider text-primary uppercase">
             How it works
           </p>
-          <h2 className="font-display mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
+          <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
             Five steps from flower to finished garment
           </h2>
         </div>
@@ -305,7 +316,7 @@ export default function Landing() {
               className="rounded-2xl border border-border/70 bg-card p-5 shadow-sm"
             >
               <div className="flex items-center justify-between">
-                <span className="flex size-10 items-center justify-center rounded-xl bg-primary/8 text-xl">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-xl">
                   {step.icon}
                 </span>
                 <span className="font-mono text-[10px] text-muted-foreground">
@@ -322,13 +333,13 @@ export default function Landing() {
       </section>
 
       {/* Supply chain journey */}
-      <section id="journey" className="border-y border-border/60 bg-muted/30 py-20">
+      <section id="journey" className="border-y border-border/60 bg-muted/40 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mb-12 max-w-2xl">
             <p className="text-xs font-semibold tracking-wider text-primary uppercase">
               Supply chain, visualized
             </p>
-            <h2 className="font-display mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
               Every garment has a story. Prove it.
             </h2>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -352,7 +363,7 @@ export default function Landing() {
                   <code className="mt-2 rounded bg-muted px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground">
                     {j.batch}
                   </code>
-                  <span className="mt-2 inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-600">
+                  <span className="mt-2 inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-400">
                     <CheckCircle2 className="size-3" /> VERIFIED
                   </span>
                 </motion.div>
@@ -370,15 +381,15 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* AI designs */}
+      {/* EcoPrint AI designs */}
       <section id="designs" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold tracking-wider text-primary uppercase">
-              Botanical AI studio
+              EcoPrint AI studio
             </p>
-            <h2 className="font-display mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
-              Designed by AI, from real botanicals
+            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Bespoke designs from real botanicals
             </h2>
           </div>
           <Button asChild variant="outline">
@@ -393,7 +404,7 @@ export default function Landing() {
               key={d.title}
               {...fadeUp}
               transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-              className="group overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-md"
+              className="group overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition-shadow hover:shadow-lg hover:shadow-black/30"
             >
               <GarmentPreview
                 palette={d.palette}
@@ -416,13 +427,13 @@ export default function Landing() {
       </section>
 
       {/* Security */}
-      <section id="security" className="border-t border-border/60 bg-muted/30 py-20">
+      <section id="security" className="border-t border-border/60 bg-muted/40 py-20">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
           <div>
             <p className="text-xs font-semibold tracking-wider text-primary uppercase">
               Cybersecurity layer
             </p>
-            <h2 className="font-display mt-2 text-3xl font-medium tracking-tight sm:text-4xl">
+            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
               Tamper-evident by design
             </h2>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
@@ -439,7 +450,7 @@ export default function Landing() {
                 },
                 {
                   icon: ShieldCheck,
-                  text: "Role-based access control for farmers, makers, tailors and admins",
+                  text: "Role-based access control for farmers, makers and tailors",
                 },
                 {
                   icon: QrCode,
@@ -451,7 +462,7 @@ export default function Landing() {
                 },
               ].map((f) => (
                 <li key={f.text} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/8 text-primary">
+                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <f.icon className="size-3.5" />
                   </span>
                   <span className="text-muted-foreground">{f.text}</span>
@@ -498,7 +509,7 @@ export default function Landing() {
                   "rounded-xl border p-4 shadow-sm",
                   row.ok
                     ? "border-border/70 bg-card"
-                    : "border-rose-200 bg-rose-50",
+                    : "border-rose-400/30 bg-rose-500/10",
                 )}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -509,11 +520,11 @@ export default function Landing() {
                 </div>
                 <div className="mt-1.5 flex items-center gap-2 text-[11px]">
                   {row.ok ? (
-                    <span className="flex items-center gap-1 font-semibold text-emerald-600">
+                    <span className="flex items-center gap-1 font-semibold text-emerald-400">
                       <CheckCircle2 className="size-3.5" /> HASH OK
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 font-semibold text-rose-600">
+                    <span className="flex items-center gap-1 font-semibold text-rose-400">
                       🔴 MISMATCH
                     </span>
                   )}
@@ -523,7 +534,7 @@ export default function Landing() {
                 </div>
               </div>
             ))}
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
+            <div className="rounded-xl border border-rose-400/30 bg-rose-500/10 p-4 text-sm font-semibold text-rose-300">
               🔴 TAMPERING DETECTED — the record's hash no longer matches the
               stored integrity chain.
             </div>
@@ -536,18 +547,18 @@ export default function Landing() {
         <div className="relative overflow-hidden rounded-3xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12">
           <div
             aria-hidden
-            className="absolute inset-0 opacity-10"
+            className="absolute inset-0 opacity-15"
             style={{
               backgroundImage:
-                "radial-gradient(circle at 20% 20%, white 1px, transparent 1px), radial-gradient(circle at 80% 70%, white 1px, transparent 1px)",
+                "radial-gradient(circle at 20% 20%, currentColor 1px, transparent 1px), radial-gradient(circle at 80% 70%, currentColor 1px, transparent 1px)",
               backgroundSize: "48px 48px",
             }}
           />
           <div className="relative">
-            <p className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
+            <p className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               From plant to personalized fashion.
             </p>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/75">
+            <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/80">
               Designed by AI. Protected by cybersecurity. Worn with certainty.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -578,14 +589,15 @@ export default function Landing() {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 sm:px-6">
           <Logo />
           <p className="text-xs text-muted-foreground">
-            NaturalFlow · AI-powered secure natural fashion · Hackathon MVP
+            AI Eco Threads · EcoPrint AI · Secure Natural Fashion · Hackathon
+            MVP
           </p>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <Sprout className="size-3.5 text-emerald-600" /> Farmers
+              <Sprout className="size-3.5 text-emerald-400" /> Farmers
             </span>
             <span className="flex items-center gap-1">
-              <Droplets className="size-3.5 text-sky-600" /> Dye makers
+              <Droplets className="size-3.5 text-sky-400" /> Dye makers
             </span>
             <span className="flex items-center gap-1">
               <Lock className="size-3.5 text-primary" /> SHA-256

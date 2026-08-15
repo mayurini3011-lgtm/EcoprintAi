@@ -126,7 +126,7 @@ export default function Security() {
       </div>
 
       {/* Tamper demonstration */}
-      <Card className={cn("shadow-none border-border/70", !valid && "border-rose-300")}>
+      <Card className={cn("shadow-none border-border/70", !valid && "border-rose-400/40")}>
         <CardHeader className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <CardTitle className="flex items-center gap-2 text-base">
@@ -171,20 +171,20 @@ export default function Security() {
                 className={cn(
                   "mb-4 rounded-xl border p-4",
                   valid
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                    : "border-rose-200 bg-rose-50 text-rose-900",
+                    ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-200"
+                    : "border-rose-400/30 bg-rose-500/10 text-rose-200",
                 )}
               >
                 <p className="flex items-center gap-2 text-sm font-bold">
                   {valid ? "🟢 VERIFIED — No Tampering Detected" : "🔴 TAMPERING DETECTED"}
                 </p>
                 {valid ? (
-                  <p className="mt-1 text-xs text-emerald-700">
+                  <p className="mt-1 text-xs text-emerald-300/90">
                     All {verification.eventCount} records match their stored
                     SHA-256 hashes and the chain links are intact.
                   </p>
                 ) : (
-                  <div className="mt-1 text-xs text-rose-700">
+                  <div className="mt-1 text-xs text-rose-300/90">
                     <p>
                       The hash of this record no longer matches the stored
                       integrity chain.
@@ -251,10 +251,10 @@ export default function Security() {
                       className={cn(
                         "text-sm font-bold",
                         a.status === "high"
-                          ? "text-rose-600"
+                          ? "text-rose-400"
                           : a.status === "medium"
-                            ? "text-amber-600"
-                            : "text-emerald-600",
+                            ? "text-amber-400"
+                            : "text-emerald-400",
                       )}
                     >
                       {a.riskScore}/100

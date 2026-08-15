@@ -48,7 +48,7 @@ export function HashChainTable({
             return (
               <TableRow
                 key={c.chainIndex}
-                className={cn(!ok && "bg-rose-50/60 dark:bg-rose-950/20")}
+                className={cn(!ok && "bg-rose-500/10")}
               >
                 <TableCell className="text-muted-foreground">
                   {c.chainIndex}

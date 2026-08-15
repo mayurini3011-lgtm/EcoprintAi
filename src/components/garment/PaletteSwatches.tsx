@@ -41,18 +41,18 @@ export function PaletteSwatches({
 }
 
 const TONES: Record<string, string> = {
-  verified: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  delivered: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  finished: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  pending: "bg-amber-50 text-amber-700 ring-amber-600/20",
-  limited: "bg-amber-50 text-amber-700 ring-amber-600/20",
-  available: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  flagged: "bg-rose-50 text-rose-700 ring-rose-600/20",
-  rejected: "bg-rose-50 text-rose-700 ring-rose-600/20",
-  out: "bg-zinc-100 text-zinc-600 ring-zinc-500/20",
-  low: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  medium: "bg-amber-50 text-amber-700 ring-amber-600/20",
-  high: "bg-rose-50 text-rose-700 ring-rose-600/20",
+  verified: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
+  delivered: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
+  finished: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
+  pending: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
+  limited: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
+  available: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
+  flagged: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
+  rejected: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
+  out: "bg-zinc-500/15 text-zinc-300 ring-zinc-400/30",
+  low: "bg-emerald-500/15 text-emerald-300 ring-emerald-400/30",
+  medium: "bg-amber-500/15 text-amber-300 ring-amber-400/30",
+  high: "bg-rose-500/15 text-rose-300 ring-rose-400/30",
 };
 
 const DOTS: Record<string, string> = {
@@ -82,7 +82,7 @@ export function StatusPill({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium ring-1 ring-inset capitalize",
-        TONES[key] ?? "bg-zinc-100 text-zinc-600 ring-zinc-500/20",
+        TONES[key] ?? "bg-zinc-500/15 text-zinc-300 ring-zinc-400/30",
         className,
       )}
     >

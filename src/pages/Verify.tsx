@@ -63,7 +63,7 @@ export default function Verify() {
           code or try another garment.
         </p>
         <Button asChild variant="outline">
-          <Link to="/">Back to NaturalFlow</Link>
+          <Link to="/">Back to AI Eco Threads</Link>
         </Button>
       </div>
     );
@@ -101,8 +101,8 @@ export default function Verify() {
               className={cn(
                 "flex flex-col items-center gap-2 rounded-xl border p-5 text-center",
                 valid === false
-                  ? "border-rose-200 bg-rose-50 text-rose-900"
-                  : "border-emerald-200 bg-emerald-50 text-emerald-900",
+                  ? "border-rose-400/30 bg-rose-500/10 text-rose-200"
+                  : "border-emerald-400/30 bg-emerald-500/10 text-emerald-200",
               )}
             >
               <p className="flex items-center gap-2 text-base font-bold">
@@ -117,13 +117,13 @@ export default function Verify() {
                 )}
               </p>
               {valid === false ? (
-                <p className="text-xs text-rose-700">
+                <p className="text-xs text-rose-300/90">
                   The integrity chain is broken — a supply-chain record was
                   modified after it was sealed. Do not trust this garment's
                   provenance.
                 </p>
               ) : (
-                <p className="text-xs text-emerald-700">
+                <p className="text-xs text-emerald-300/90">
                   This garment's provenance is cryptographically verified and
                   tamper-evident.
                 </p>
@@ -166,8 +166,8 @@ export default function Verify() {
                       className={cn(
                         "rounded-lg border p-3 text-xs font-semibold",
                         valid
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                          : "border-rose-200 bg-rose-50 text-rose-800",
+                          ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300"
+                          : "border-rose-400/30 bg-rose-500/10 text-rose-300",
                       )}
                     >
                       {valid

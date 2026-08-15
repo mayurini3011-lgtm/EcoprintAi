@@ -35,14 +35,14 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const NAV: { to: string; label: string; icon: LucideIcon }[] = [
-  { to: "/dashboard", label: "Design Studio", icon: Sparkles },
-  { to: "/dyes", label: "Natural Dyes", icon: Droplets },
-  { to: "/tailors", label: "Tailors", icon: Scissors },
+  { to: "/dashboard", label: "EcoPrint Studio", icon: Sparkles },
+  { to: "/dyes", label: "Dye Catalogue", icon: Droplets },
+  { to: "/tailors", label: "Tailor Network", icon: Scissors },
   { to: "/orders", label: "My Orders", icon: Package },
   { to: "/farmer", label: "Farmer Portal", icon: Sprout },
   { to: "/manufacturer", label: "Manufacturer", icon: Factory },
   { to: "/security", label: "Security Center", icon: ShieldCheck },
-  { to: "/admin", label: "Admin", icon: LayoutDashboard },
+  { to: "/admin", label: "Admin Console", icon: LayoutDashboard },
 ];
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -44,6 +45,7 @@ import { useMutation, useQuery } from "convex/react";
 import {
   ArrowLeft,
   ArrowRight,
+  CalendarClock,
   Check,
   CheckCircle2,
   Droplets,
@@ -61,6 +63,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 type Dye = Doc<"dyes">;
 type Fabric = Doc<"fabrics">;
@@ -82,10 +85,22 @@ const STEP_LABELS: Record<Step, string> = {
   customize: "Customize",
   dye: "Dye & Fabric",
   measurements: "Measurements",
-  tailor: "Tailor",
-  review: "Review",
+  tailor: "Tailor & Slot",
+  review: "Checkout",
   placed: "Complete",
 };
+
+const DELIVERY_WINDOWS = [
+  "Morning · 9am–12pm",
+  "Afternoon · 12pm–4pm",
+  "Evening · 4pm–8pm",
+] as const;
+
+const PAYMENT_METHODS = [
+  { value: "upi", label: "UPI", hint: "Instant · demo" },
+  { value: "card", label: "Card", hint: "Visa / Mastercard · demo" },
+  { value: "cod", label: "Cash on delivery", hint: "Pay the tailor · demo" },
+] as const;
 
 const ANALYZE_MESSAGES = [
   "Extracting pigments…",
@@ -144,6 +159,14 @@ export default function Studio() {
     lengthPreference: "Knee length",
   });
   const [tailor, setTailor] = useState<Tailor | null>(null);
+
+  // Checkout: delivery slot, payment, tailor note
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryWindow, setDeliveryWindow] = useState<string>(
+    DELIVERY_WINDOWS[0],
+  );
+  const [paymentMethod, setPaymentMethod] = useState<string>("upi");
+  const [notes, setNotes] = useState("");
 
   // Placement
   const [placing, setPlacing] = useState(false);
@@ -251,6 +274,10 @@ export default function Studio() {
 
   const handlePlaceOrder = async () => {
     if (!selectedDesign || !fabric || !dye || !tailor || !priceBreakdown) return;
+    if (!deliveryDate) {
+      toast.error("Pick a delivery date to book your slot.");
+      return;
+    }
     setPlacing(true);
     try {
       const result = await placeOrder({
@@ -274,6 +301,10 @@ export default function Studio() {
         tailorCode: tailor.code,
         measurements,
         totalPrice: priceBreakdown.total,
+        deliveryDate: deliveryDate || undefined,
+        deliveryWindow,
+        paymentMethod,
+        notes: notes.trim() || undefined,
       });
       setPlaced(result);
       setStep("placed");
@@ -313,7 +344,7 @@ export default function Studio() {
               active
                 ? "border-primary bg-primary text-primary-foreground"
                 : done
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                  ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300 cursor-pointer hover:bg-emerald-500/20"
                   : "border-border bg-background text-muted-foreground",
             )}
           >
@@ -329,14 +360,14 @@ export default function Studio() {
     <div className="mx-auto max-w-5xl">
       <div className="mb-6">
         <p className="text-xs font-semibold tracking-wider text-primary uppercase">
-          Design Studio
+          EcoPrint Studio
         </p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
           From plant to personalized fashion
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Upload a flower or leaf — our botanical AI turns it into a
-          one-of-a-kind, traceable garment.
+          Upload a flower or leaf — EcoPrint AI turns it into a one-of-a-kind,
+          traceable garment, then books your tailor and seals the chain.
         </p>
       </div>
 
@@ -348,8 +379,8 @@ export default function Studio() {
             <CardHeader>
               <CardTitle className="text-base">Upload a flower or leaf</CardTitle>
               <CardDescription>
-                JPG, PNG or WebP · up to 10 MB. The AI extracts pigments and
-                identifies the botanical species.
+                JPG, PNG or WebP · up to 10 MB. EcoPrint AI extracts the
+                pigments and identifies the botanical species.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -427,7 +458,7 @@ export default function Studio() {
               <CardContent className="flex items-center gap-4 p-6">
                 <Loader2 className="size-6 animate-spin text-primary" />
                 <div>
-                  <p className="text-sm font-medium">Botanical AI is working…</p>
+                  <p className="text-sm font-medium">EcoPrint AI is working…</p>
                   <p className="text-xs text-muted-foreground">
                     {ANALYZE_MESSAGES[analyzeMsg % ANALYZE_MESSAGES.length]}
                   </p>
@@ -458,8 +489,8 @@ export default function Studio() {
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary" className="gap-1">
                     <Sparkles className="size-3" />
-                    AI identification · {Math.round(plant.confidence * 100)}%
-                    confidence
+                    EcoPrint AI identification ·{" "}
+                    {Math.round(plant.confidence * 100)}% confidence
                   </Badge>
                   <Badge variant="outline">{plant.family}</Badge>
                   <StatusPill
@@ -489,7 +520,7 @@ export default function Studio() {
           {/* Design concepts */}
           <div>
             <h2 className="mb-3 text-sm font-semibold tracking-wide text-foreground">
-              AI-generated design concepts
+              EcoPrint AI design concepts
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {designs.map((design) => (
@@ -774,7 +805,7 @@ export default function Studio() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="text-sm font-semibold">{f.name}</p>
-                    <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                    <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-300">
                       {f.sustainabilityScore}/100
                     </span>
                   </div>
@@ -906,8 +937,8 @@ export default function Studio() {
                       {t.shopName} · {t.location}
                     </p>
                   </div>
-                  <span className="inline-flex items-center gap-1 rounded bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold text-amber-700">
-                    <Star className="size-3 fill-amber-500 text-amber-500" />
+                  <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-amber-300">
+                    <Star className="size-3 fill-amber-400 text-amber-400" />
                     {t.rating.toFixed(1)}
                   </span>
                 </div>
@@ -934,6 +965,52 @@ export default function Studio() {
               </button>
             ))}
           </div>
+          {/* Delivery slot booking */}
+          <Card className="shadow-none border-border/70">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <CalendarClock className="size-4 text-primary" /> Book your
+                delivery slot
+              </CardTitle>
+              <CardDescription>
+                Pick a date and time window — your tailor reserves it when the
+                order is placed.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="delivery-date" className="text-xs">
+                  Delivery date
+                </Label>
+                <Input
+                  id="delivery-date"
+                  type="date"
+                  min={new Date(Date.now() + 3 * 86400000)
+                    .toISOString()
+                    .slice(0, 10)}
+                  className="mt-1 h-9 text-sm"
+                  value={deliveryDate}
+                  onChange={(e) => setDeliveryDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Time window</Label>
+                <Select value={deliveryWindow} onValueChange={setDeliveryWindow}>
+                  <SelectTrigger className="mt-1 h-9 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {DELIVERY_WINDOWS.map((w) => (
+                      <SelectItem key={w} value={w}>
+                        {w}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="flex justify-between">
             <Button variant="outline" onClick={() => setStep("measurements")}>
               <ArrowLeft className="mr-2 size-4" /> Back
@@ -949,10 +1026,11 @@ export default function Studio() {
         <div className="mx-auto max-w-3xl space-y-4">
           <Card className="shadow-none border-border/70">
             <CardHeader>
-              <CardTitle className="text-base">Review your order</CardTitle>
+              <CardTitle className="text-base">Checkout</CardTitle>
               <CardDescription>
-                Confirm the design, fabric, colour, measurements, tailor and
-                price — then we mint your secure garment identity.
+                Confirm the design, dye and fabric, measurements and tailor —
+                then book your delivery slot, choose how to pay, and mint the
+                secure garment identity.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -988,6 +1066,72 @@ export default function Studio() {
                 />
               </dl>
               <Separator />
+
+              {/* Delivery slot summary */}
+              <div className="grid gap-2 text-sm sm:grid-cols-2">
+                <Row
+                  label="Delivery slot"
+                  value={
+                    deliveryDate
+                      ? `${new Date(deliveryDate).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                        })} · ${deliveryWindow}`
+                      : "Not booked"
+                  }
+                />
+                <Row
+                  label="Payment"
+                  value={
+                    PAYMENT_METHODS.find((p) => p.value === paymentMethod)?.label ??
+                    paymentMethod
+                  }
+                />
+              </div>
+
+              {/* Payment method */}
+              <div>
+                <Label className="text-xs">Payment method</Label>
+                <div className="mt-1.5 grid gap-2 sm:grid-cols-3">
+                  {PAYMENT_METHODS.map((p) => (
+                    <button
+                      key={p.value}
+                      type="button"
+                      onClick={() => setPaymentMethod(p.value)}
+                      className={cn(
+                        "rounded-xl border px-3 py-2.5 text-left transition-colors",
+                        paymentMethod === p.value
+                          ? "border-primary bg-primary/10"
+                          : "border-border/70 hover:bg-muted/50",
+                      )}
+                    >
+                      <p className="text-xs font-semibold">{p.label}</p>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">
+                        {p.hint}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-1.5 text-[10px] text-muted-foreground">
+                  Demo checkout — no real payment is processed.
+                </p>
+              </div>
+
+              {/* Note for the tailor */}
+              <div>
+                <Label htmlFor="tailor-notes" className="text-xs">
+                  Note for your tailor (optional)
+                </Label>
+                <Textarea
+                  id="tailor-notes"
+                  className="mt-1 min-h-16 text-xs"
+                  placeholder="e.g. Prefer a softer collar, add side slits…"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+              </div>
+
+              <Separator />
               <dl className="space-y-1.5 text-sm">
                 <Row
                   label={`Fabric · 3.2 m × ${formatINR(fabric?.pricePerMeter ?? 0)}`}
@@ -1020,7 +1164,7 @@ export default function Studio() {
               ) : (
                 <Lock className="size-4" />
               )}
-              {placing ? "Minting garment ID…" : "Place order & mint garment ID"}
+              {placing ? "Minting garment ID…" : "Pay & place order"}
             </Button>
           </div>
         </div>
@@ -1030,7 +1174,7 @@ export default function Studio() {
         <div className="space-y-6">
           <Card className="shadow-none border-border/70">
             <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
-              <span className="flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+              <span className="flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
                 <CheckCircle2 className="size-8" />
               </span>
               <div>

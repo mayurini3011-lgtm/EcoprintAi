@@ -18,11 +18,11 @@ export function StatCard({
   className?: string;
 }) {
   const tones: Record<string, string> = {
-    default: "bg-primary/8 text-primary",
-    success: "bg-emerald-500/10 text-emerald-600",
-    warning: "bg-amber-500/10 text-amber-600",
-    danger: "bg-rose-500/10 text-rose-600",
-    info: "bg-sky-500/10 text-sky-600",
+    default: "bg-primary/12 text-primary",
+    success: "bg-emerald-500/12 text-emerald-400",
+    warning: "bg-amber-500/12 text-amber-400",
+    danger: "bg-rose-500/12 text-rose-400",
+    info: "bg-sky-500/12 text-sky-400",
   };
   return (
     <Card className="shadow-none border-border/70">

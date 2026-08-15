@@ -144,8 +144,8 @@ export default function Farmer() {
           <CardHeader>
             <CardTitle className="text-base">Submit a new batch</CardTitle>
             <CardDescription>
-              Record your harvest. The AI risk scanner checks your document for
-              fraud signals before submission.
+              Record your harvest. EcoPrint AI scans your supporting document
+              for fraud signals before submission.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -220,20 +220,20 @@ export default function Farmer() {
             {scanning && (
               <div className="flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
                 <Loader2 className="size-3.5 animate-spin text-primary" />
-                AI risk scanner analysing document…
+                EcoPrint AI risk scanner analysing document…
               </div>
             )}
 
             {risk && (
               <div
-                className={cn(
-                  "rounded-lg border p-3 text-xs",
-                  risk.status === "high"
-                    ? "border-rose-200 bg-rose-50 text-rose-800"
-                    : risk.status === "medium"
-                      ? "border-amber-200 bg-amber-50 text-amber-800"
-                      : "border-emerald-200 bg-emerald-50 text-emerald-800",
-                )}
+              className={cn(
+                "rounded-lg border p-3 text-xs",
+                risk.status === "high"
+                  ? "border-rose-400/30 bg-rose-500/10 text-rose-300"
+                  : risk.status === "medium"
+                    ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
+                    : "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+              )}
               >
                 <p className="flex items-center gap-1.5 font-semibold">
                   <ShieldAlert className="size-3.5" />
@@ -266,7 +266,7 @@ export default function Farmer() {
                 <CardContent className="p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <span className="flex size-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
+                      <span className="flex size-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
                         <Sprout className="size-4" />
                       </span>
                       <div>

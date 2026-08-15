@@ -125,9 +125,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <Logo />
                     </div>
                   </div>
-                <CardTitle className="text-xl">Get Started</CardTitle>
+                <CardTitle className="text-xl">Enter the EcoPrint Studio</CardTitle>
                 <CardDescription>
-                  Sign in to the Design Studio, or jump straight into the demo
+                  Sign in with your email, or jump straight in as a guest.
                 </CardDescription>
               </CardHeader>
               <form onSubmit={handleEmailSubmit}>
@@ -182,10 +182,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       disabled={isLoading}
                     >
                       <Zap className="mr-2 h-4 w-4 text-primary" />
-                      Continue as Guest — instant demo access
+                      Continue as guest — instant demo access
                     </Button>
                     <p className="mt-2 text-[11px] leading-4 text-muted-foreground">
-                      Guest access loads the full seeded demo: 5 farmers, 10 dye
+                      Guest access loads the full seeded demo: 5 farms, 10 dye
                       batches, 10 garments and the tamper-evident security
                       showcase.
                     </p>
@@ -278,7 +278,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           )}
 
           <div className="py-4 px-6 text-xs text-center text-muted-foreground bg-muted border-t rounded-b-lg">
-            NaturalFlow · AI × Cybersecurity × Natural Dye
+            AI Eco Threads · EcoPrint AI · Secure Natural Fashion
           </div>
         </Card>
         </div>

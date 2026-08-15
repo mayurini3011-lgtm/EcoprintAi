@@ -136,7 +136,7 @@ export default function Manufacturer() {
           <CardHeader>
             <CardTitle className="text-base">Process raw material</CardTitle>
             <CardDescription>
-              Convert a farmer batch into a verified dye batch. The lineage is
+              Convert a farm batch into a verified dye batch. The lineage is
               preserved automatically.
             </CardDescription>
           </CardHeader>
@@ -289,7 +289,7 @@ export default function Manufacturer() {
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
                       <span
-                        className="size-9 shrink-0 rounded-full border border-black/10"
+                        className="size-9 shrink-0 rounded-full border border-white/10"
                         style={{ backgroundColor: dye.colorHex }}
                       />
                       <div>

@@ -131,14 +131,14 @@ export function buildChainSpecs(input: ChainSpecInput): ChainSpec[] {
     {
       stage: "DESIGN",
       title: "AI design generated",
-      actor: "NaturalFlow AI",
+      actor: "EcoPrint AI",
       batchId: input.design.code,
       date: designDate,
       status: "verified",
       payload: {
         event: "ai-design-generated",
         stage: "DESIGN",
-        actor: "NaturalFlow AI",
+        actor: "EcoPrint AI",
         batchId: input.design.code,
         model: "botanical-vision-v1 (mock)",
         plant: input.plantBotanicalName,

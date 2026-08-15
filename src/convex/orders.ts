@@ -44,6 +44,10 @@ export const placeOrder = mutation({
       lengthPreference: v.string(),
     }),
     totalPrice: v.number(),
+    deliveryDate: v.optional(v.string()),
+    deliveryWindow: v.optional(v.string()),
+    paymentMethod: v.optional(v.string()),
+    notes: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
@@ -138,6 +142,10 @@ export const placeOrder = mutation({
       status: ORDER_STEPS[0],
       createdAt: now.toISOString(),
       garmentId,
+      deliveryDate: args.deliveryDate,
+      deliveryWindow: args.deliveryWindow,
+      paymentMethod: args.paymentMethod,
+      notes: args.notes,
     });
 
     // --- Create the garment ----------------------------------------------

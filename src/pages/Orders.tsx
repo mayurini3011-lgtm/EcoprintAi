@@ -146,6 +146,27 @@ export default function Orders() {
                         value={`${order.measurements.heightCm} cm · ${order.measurements.lengthPreference}`}
                       />
                       <Info
+                        label="Delivery slot"
+                        value={
+                          order.deliveryDate
+                            ? `${new Date(order.deliveryDate).toLocaleDateString(
+                                "en-IN",
+                                { day: "numeric", month: "short" },
+                              )} · ${order.deliveryWindow ?? "—"}`
+                            : "Not booked"
+                        }
+                      />
+                      <Info
+                        label="Payment"
+                        value={
+                          order.paymentMethod
+                            ? order.paymentMethod === "cod"
+                              ? "Cash on delivery"
+                              : order.paymentMethod.toUpperCase()
+                            : "—"
+                        }
+                      />
+                      <Info
                         label="Palette"
                         value={undefined}
                         custom={
@@ -153,6 +174,17 @@ export default function Orders() {
                         }
                       />
                     </div>
+
+                    {order.notes && (
+                      <div className="rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-xs">
+                        <p className="text-[9px] tracking-wide text-muted-foreground uppercase">
+                          Note for the tailor
+                        </p>
+                        <p className="mt-0.5 text-muted-foreground">
+                          “{order.notes}”
+                        </p>
+                      </div>
+                    )}
 
                     <div className="flex flex-wrap items-center gap-3">
                       {order.garmentId ? (

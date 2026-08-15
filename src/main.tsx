@@ -15,7 +15,9 @@ const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Studio = lazy(() => import("./pages/Studio.tsx"));
 const Dyes = lazy(() => import("./pages/Dyes.tsx"));
+const DyeDetail = lazy(() => import("./pages/DyeDetail.tsx"));
 const Tailors = lazy(() => import("./pages/Tailors.tsx"));
+const TailorDetail = lazy(() => import("./pages/TailorDetail.tsx"));
 const Orders = lazy(() => import("./pages/Orders.tsx"));
 const Farmer = lazy(() => import("./pages/Farmer.tsx"));
 const Manufacturer = lazy(() => import("./pages/Manufacturer.tsx"));
@@ -155,11 +157,31 @@ createRoot(document.getElementById("root")!).render(
                 }
               />
               <Route
+                path="/dyes/:code"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <DyeDetail />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
                 path="/tailors"
                 element={
                   <RequireAuth>
                     <AppShell>
                       <Tailors />
+                    </AppShell>
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/tailors/:code"
+                element={
+                  <RequireAuth>
+                    <AppShell>
+                      <TailorDetail />
                     </AppShell>
                   </RequireAuth>
                 }

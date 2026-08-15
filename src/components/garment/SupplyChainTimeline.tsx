@@ -83,8 +83,8 @@ export function SupplyChainTimeline({
               className={cn(
                 "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border text-sm shadow-sm",
                 ok
-                  ? "border-emerald-200 bg-emerald-50"
-                  : "border-rose-200 bg-rose-50",
+                  ? "border-emerald-400/30 bg-emerald-500/10"
+                  : "border-rose-400/30 bg-rose-500/10",
               )}
             >
               {STAGE_ICONS[event.stage] ?? "•"}

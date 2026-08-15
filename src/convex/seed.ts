@@ -299,7 +299,7 @@ export const seedDemoData = mutation({
       { actor: "system", action: "demo_data_seeded", entity: "platform", entityCode: "ALL", details: "Demo dataset initialised (farmers, dyes, garments, chains).", timestamp: iso(2026, 7, 14, 8) },
       { actor: "Quality Assurance Lab", action: "batch_verified", entity: "raw_material_batch", entityCode: "FARM-IND-2026-001", details: "Indigo leaves, 250 kg — purity 96%, moisture 8.2%.", timestamp: iso(2026, 5, 20) },
       { actor: "Aravalli Naturals", action: "dye_batch_created", entity: "dye", entityCode: "DYE-IND-2026-001", details: "Natural Indigo produced from FARM-IND-2026-001.", timestamp: iso(2026, 5, 22) },
-      { actor: "NaturalFlow AI", action: "design_generated", entity: "design", entityCode: "DSG-2026-010", details: "Hibiscus Heritage Kurta — 4-colour palette, temple border.", timestamp: iso(2026, 5, 7) },
+      { actor: "EcoPrint AI", action: "design_generated", entity: "design", entityCode: "DSG-2026-010", details: "Hibiscus Heritage Kurta — 4-colour palette, temple border.", timestamp: iso(2026, 5, 7) },
       { actor: "Quality Check", action: "garment_finished", entity: "garment", entityCode: "NF-2026-000124", details: "12 checks passed; QR bound; chain hash stored.", timestamp: iso(2026, 7, 14) },
       { actor: "fraud-scanner-v1", action: "risk_scan_completed", entity: "garment", entityCode: "NF-2026-000119", details: "Risk score 87/100 — HIGH RISK.", timestamp: iso(2026, 5, 9) },
       { actor: "demo-admin", action: "chain_verified", entity: "garment", entityCode: "NF-2026-000124", details: "Full hash chain verified — no tampering detected.", timestamp: iso(2026, 7, 14, 12) },
