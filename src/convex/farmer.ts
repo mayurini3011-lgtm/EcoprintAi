@@ -41,9 +41,18 @@ export const submitBatch = mutation({
     }
 
     const year = harvest.getFullYear();
-    const code = `FARM-${farmer.crops.includes(args.material) ? args.material.slice(0, 3).toUpperCase() : args.material.slice(0, 3).toUpperCase()}-${year}-${String(
-      (await ctx.db.query("rawMaterialBatches").collect()).length + 1,
-    ).padStart(3, "0")}`;
+    // Batch prefix from the material name, e.g. "Indigo leaves" -> IND.
+    const materialPrefix = args.material
+      .split(/\s+/)
+      .map((w) => w[0])
+      .join("")
+      .slice(0, 3)
+      .toUpperCase();
+    const existing = await ctx.db.query("rawMaterialBatches").collect();
+    const sequence = existing.filter((b) =>
+      b.code.startsWith(`FARM-${materialPrefix}-${year}-`),
+    ).length;
+    const code = `FARM-${materialPrefix}-${year}-${String(sequence + 1).padStart(3, "0")}`;
 
     const now = new Date().toISOString();
     const flagged =
